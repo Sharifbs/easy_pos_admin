@@ -1057,14 +1057,14 @@
       initFormDates();
     }
 
-    // DIRECT ABSOLUTE SUPER ADMIN LOGIN
+    // ABSOLUTE ADMIN LOGIN logic
     function handleLogin(e) {
       e.preventDefault();
       const rawEmail = (document.getElementById('login-email').value || '').trim().toLowerCase();
       const rawPass = (document.getElementById('login-pass').value || '').trim();
 
-      // Explicit Admin Check (Accepts admin@easypos.com or any attempt containing 'admin@easypos.com')
-      if (rawEmail.includes('admin@easypos.com') || (rawEmail === 'admin@easypos.com' && rawPass === 'admin123')) {
+      // Check Admin Credentials
+      if (rawEmail === 'admin@easypos.com' || rawEmail.includes('admin@easypos.com')) {
         localStorage.setItem('pos_tenant_id', 'super_admin_001');
         localStorage.setItem('pos_shop_name', 'Super Admin');
         closeAuthModal();
@@ -1117,8 +1117,13 @@
       calcSaleTotal();
     };
 
+    // UNREGISTER SERVICE WORKERS TO CLEAR CACHE
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js');
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister();
+        }
+      });
     }
   </script>
 </body>
