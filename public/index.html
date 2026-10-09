@@ -3,134 +3,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Easy POS - Invoice Generator</title>
+  <title>Easy POS Admin</title>
   <link rel="manifest" href="/manifest.json">
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; background: #eef2f5; }
-    .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); max-width: 480px; margin: 0 auto; }
-    h2 { color: #1e293b; margin-top: 0; font-size: 20px; text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-    label { font-size: 13px; color: #64748b; font-weight: 600; display: block; margin-top: 12px; }
-    input, select { width: 100%; padding: 10px 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px; }
-    .row { display: flex; gap: 10px; }
-    .row div { flex: 1; }
-    .summary-box { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px; margin-top: 15px; }
-    .summary-item { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; color: #334155; }
-    .summary-item.due { color: #dc2626; font-weight: bold; font-size: 16px; border-top: 1px solid #e2e8f0; padding-top: 5px; }
-    button { width: 100%; background: #25D366; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 15px; margin-top: 18px; cursor: pointer; transition: 0.2s; }
-    button:hover { background: #1eb956; }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen pb-20">
 
-<div class="card">
-  <h2>EASY POS - SALES & INVOICE</h2>
+  <!-- Header -->
+  <header class="bg-indigo-600 text-white p-4 shadow-lg sticky top-0 z-50 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Easy POS System</h1>
+    <span id="tenant-badge" class="bg-indigo-800 text-xs px-2 py-1 rounded">Client POS</span>
+  </header>
 
-  <label for="clientSelect">Select Client / Store</label>
-  <select id="clientSelect">
-    <option value="CUST-001">Rahim Store (CUST-001)</option>
-  </select>
+  <!-- Main Container -->
+  <main class="max-w-4xl mx-auto p-4">
 
-  <label for="custName">Customer Name</label>
-  <input type="text" id="custName" placeholder="Enter Customer Name">
+    <!-- 1. DASHBOARD TAB -->
+    <section id="tab-dashboard" class="tab-content space-y-4">
+      <h2 class="text-xl font-bold text-gray-800">Dashboard</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-blue-500">
+          <p class="text-xs text-gray-500 font-semibold uppercase">Total Invoices</p>
+          <h3 id="dash-invoices" class="text-2xl font-bold text-gray-800 mt-1">0</h3>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-green-500">
+          <p class="text-xs text-gray-500 font-semibold uppercase">Total Receipts</p>
+          <h3 id="dash-receipts" class="text-2xl font-bold text-gray-800 mt-1">৳ 0</h3>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-red-500">
+          <p class="text-xs text-gray-500 font-semibold uppercase">Total Expense</p>
+          <h3 id="dash-expense" class="text-2xl font-bold text-gray-800 mt-1">৳ 0</h3>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-yellow-500">
+          <p class="text-xs text-gray-500 font-semibold uppercase">Total Stock Items</p>
+          <h3 id="dash-stock" class="text-2xl font-bold text-gray-800 mt-1">0</h3>
+        </div>
+      </div>
+    </section>
 
-  <label for="phone">Phone Number</label>
-  <input type="text" id="phone" placeholder="Enter Phone Number">
+    <!-- 2. SALES TAB -->
+    <section id="tab-sales" class="tab-content hidden space-y-4">
+      <h2 class="text-xl font-bold text-gray-800">New Sale / Invoice</h2>
+      <div class="bg-white p-4 rounded-xl shadow space-y-3">
+        <input type="text" id="sale-client-id" placeholder="Client ID (e.g. client_01)" class="w-full p-2 border rounded">
+        <input type="text" id="sale-customer" placeholder="Customer Name & Phone" class="w-full p-2 border rounded">
+        <input type="text" id="sale-item" placeholder="Item Name" class="w-full p-2 border rounded">
+        <div class="grid grid-cols-2 gap-2">
+          <input type="number" id="sale-qty" placeholder="Qty" class="p-2 border rounded" oninput="calcSaleTotal()">
+          <input type="number" id="sale-price" placeholder="Unit Price" class="p-2 border rounded" oninput="calcSaleTotal()">
+        </div>
+        <div class="flex justify-between items-center text-lg font-bold">
+          <span>Total:</span>
+          <span id="sale-total">৳ 0</span>
+        </div>
+        <button onclick="processSale()" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">
+          Generate PDF & Share WhatsApp
+        </button>
+      </div>
+    </section>
 
-  <label for="item">Product / Item Name</label>
-  <input type="text" id="item" placeholder="Item Name">
+    <!-- 3. PURCHASE TAB -->
+    <section id="tab-purchase" class="tab-content hidden space-y-4">
+      <h2 class="text-xl font-bold text-gray-800">Purchase Entry</h2>
+      <div class="bg-white p-4 rounded-xl shadow space-y-3">
+        <input type="text" id="pur-supplier" placeholder="Supplier Name" class="w-full p-2 border rounded">
+        <input type="text" id="pur-item" placeholder="Item Name" class="w-full p-2 border rounded">
+        <div class="grid grid-cols-2 gap-2">
+          <input type="number" id="pur-qty" placeholder="Qty" class="p-2 border rounded">
+          <input type="number" id="pur-cost" placeholder="Unit Cost Price" class="p-2 border rounded">
+        </div>
+        <button onclick="addPurchase()" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700">
+          Save Purchase
+        </button>
+      </div>
+    </section>
 
-  <div class="row">
-    <div>
-      <label for="qty">Quantity</label>
-      <input type="number" id="qty" value="1" min="1" oninput="calculateSummary()">
-    </div>
-    <div>
-      <label for="price">Unit Price (TK)</label>
-      <input type="number" id="price" value="0" min="0" oninput="calculateSummary()">
-    </div>
-  </div>
+    <!-- 4. STOCK TAB -->
+    <section id="tab-stock" class="tab-content hidden space-y-4">
+      <h2 class="text-xl font-bold text-gray-800">Stock Inventory</h2>
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-gray-100 border-b">
+            <tr>
+              <th class="p-3">Item Name</th>
+              <th class="p-3">In Stock</th>
+              <th class="p-3">Price</th>
+            </tr>
+          </thead>
+          <tbody id="stock-table-body">
+            <tr>
+              <td colspan="3" class="p-3 text-center text-gray-500">No stock data available</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-  <div class="row">
-    <div>
-      <label for="advance">Advance (TK)</label>
-      <input type="number" id="advance" value="0" min="0" oninput="calculateSummary()">
-    </div>
-    <div>
-      <label for="received">Received (TK)</label>
-      <input type="number" id="received" value="0" min="0" oninput="calculateSummary()">
-    </div>
-  </div>
+    <!-- 5. ACCOUNTS TAB -->
+    <section id="tab-accounts" class="tab-content hidden space-y-4">
+      <h2 class="text-xl font-bold text-gray-800">Accounts & Ledger</h2>
+      <div class="bg-white p-4 rounded-xl shadow space-y-3">
+        <select id="acc-type" class="w-full p-2 border rounded">
+          <option value="Receipt">Receipt (জমা)</option>
+          <option value="Expense">Expense (খরচ)</option>
+        </select>
+        <input type="text" id="acc-desc" placeholder="Description / Particulars" class="w-full p-2 border rounded">
+        <input type="number" id="acc-amount" placeholder="Amount (৳)" class="w-full p-2 border rounded">
+        <button onclick="addAccountEntry()" class="w-full bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700">
+          Record Entry
+        </button>
+      </div>
+    </section>
 
-  <div class="summary-box">
-    <div class="summary-item"><span>Total Bill:</span><span id="txtTotal">0 TK</span></div>
-    <div class="summary-item"><span>Net Payable:</span><span id="txtNet">0 TK</span></div>
-    <div class="summary-item due"><span>Current Due:</span><span id="txtDue">0 TK</span></div>
-  </div>
+  </main>
 
-  <button onclick="sendInvoice()">SHARE INVOICE VIA WHATSAPP</button>
-</div>
+  <!-- Bottom Navigation Bar -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-2 text-xs text-gray-600">
+    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center text-indigo-600 font-bold">
+      <span>📊</span>
+      <span>Dashboard</span>
+    </button>
+    <button onclick="switchTab('sales')" id="nav-sales" class="flex flex-col items-center">
+      <span>🧾</span>
+      <span>Sales</span>
+    </button>
+    <button onclick="switchTab('purchase')" id="nav-purchase" class="flex flex-col items-center">
+      <span>🛒</span>
+      <span>Purchase</span>
+    </button>
+    <button onclick="switchTab('stock')" id="nav-stock" class="flex flex-col items-center">
+      <span>📦</span>
+      <span>Stock</span>
+    </button>
+    <button onclick="switchTab('accounts')" id="nav-accounts" class="flex flex-col items-center">
+      <span>💰</span>
+      <span>Accounts</span>
+    </button>
+  </nav>
 
-<script>
-  function calculateSummary() {
-    const qty = parseFloat(document.getElementById('qty').value) || 0;
-    const price = parseFloat(document.getElementById('price').value) || 0;
-    const advance = parseFloat(document.getElementById('advance').value) || 0;
-    const received = parseFloat(document.getElementById('received').value) || 0;
+  <script>
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('tab-' + tabName).classList.remove('hidden');
 
-    const total = qty * price;
-    const net = total - advance;
-    const due = net - received;
-
-    document.getElementById('txtTotal').innerText = total + " TK";
-    document.getElementById('txtNet').innerText = net + " TK";
-    document.getElementById('txtDue').innerText = due + " TK";
-  }
-
-  async function sendInvoice() {
-    const data = {
-      clientId: document.getElementById('clientSelect').value,
-      custName: document.getElementById('custName').value || "Valued Customer",
-      phone: document.getElementById('phone').value || "N/A",
-      item: document.getElementById('item').value || "General Item",
-      qty: document.getElementById('qty').value,
-      price: document.getElementById('price').value,
-      advance: document.getElementById('advance').value,
-      received: document.getElementById('received').value
-    };
-
-    try {
-      const response = await fetch('/api/invoice', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+      document.querySelectorAll('nav button').forEach(btn => {
+        btn.classList.remove('text-indigo-600', 'font-bold');
+        btn.classList.add('text-gray-600');
       });
-
-      if (!response.ok) throw new Error("PDF generation failed");
-
-      const blob = await response.blob();
-      const file = new File([blob], `Invoice_${data.custName}.pdf`, { type: 'application/pdf' });
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: 'Invoice PDF',
-          text: `*INVOICE FROM POS*\nCustomer: ${data.custName}\nItem: ${data.item}\nTotal: ${data.qty * data.price} TK`
-        });
-      } else {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `Invoice_${data.custName}.pdf`;
-        link.click();
-      }
-    } catch (err) {
-      alert("Error: " + err.message);
+      const activeNav = document.getElementById('nav-' + tabName);
+      activeNav.classList.remove('text-gray-600');
+      activeNav.classList.add('text-indigo-600', 'font-bold');
     }
-  }
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-  }
-</script>
+    function calcSaleTotal() {
+      const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
+      const price = parseFloat(document.getElementById('sale-price').value) || 0;
+      document.getElementById('sale-total').innerText = '৳ ' + (qty * price);
+    }
 
+    async function processSale() {
+      const clientId = document.getElementById('sale-client-id').value || 'demo_client';
+      const customer = document.getElementById('sale-customer').value;
+      const item = document.getElementById('sale-item').value;
+      const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
+      const price = parseFloat(document.getElementById('sale-price').value) || 0;
+      const total = qty * price;
+
+      if(!item || total <= 0) {
+        alert("Please enter valid item, quantity and price");
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(18);
+      doc.text("INVOICE", 105, 20, null, null, "center");
+      doc.setFontSize(12);
+      doc.text(`Customer: ${customer}`, 20, 40);
+      doc.text(`Item: ${item}`, 20, 50);
+      doc.text(`Quantity: ${qty}`, 20, 60);
+      doc.text(`Total Price: TK ${total}`, 20, 70);
+
+      const pdfBlob = doc.output('blob');
+      const msg = encodeURIComponent(`Hello! Here is your invoice total: TK ${total}`);
+      window.open(`https://wa.me/?text=${msg}`, '_blank');
+    }
+
+    function addPurchase() { alert("Purchase saved!"); }
+    function addAccountEntry() { alert("Account entry recorded!"); }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
 </body>
 </html>
