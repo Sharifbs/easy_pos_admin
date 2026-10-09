@@ -10,10 +10,80 @@
 </head>
 <body class="bg-gray-100 min-h-screen pb-20">
 
+  <!-- AUTH MODAL (Signup / Login) -->
+  <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+
+      <!-- SIGNUP FORM -->
+      <div id="signup-box">
+        <h2 class="text-2xl font-bold text-gray-800 mb-1">Create New POS Account</h2>
+        <p class="text-xs text-gray-500 mb-4">আপনার ব্যবসার জন্য নতুন অ্যাকাউন্ট তৈরি করুন</p>
+
+        <form onsubmit="handleSignup(event)" class="space-y-3">
+          <div>
+            <label class="text-xs font-semibold text-gray-600">Business / Shop Name</label>
+            <input type="text" id="signup-shop" required placeholder="e.g. Acme Enterprise" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600">Owner Name</label>
+            <input type="text" id="signup-name" required placeholder="আপনার নাম" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600">Email Address</label>
+            <input type="email" id="signup-email" required placeholder="name@company.com" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600">Password</label>
+            <input type="password" id="signup-pass" required placeholder="••••••••" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition shadow">
+            Sign Up & Create Account
+          </button>
+        </form>
+
+        <p class="text-xs text-center text-gray-600 mt-4">
+          আগে থেকেই অ্যাকাউন্ট আছে?
+          <button onclick="toggleAuth('login')" class="text-indigo-600 font-bold hover:underline">Log In</button>
+        </p>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="login-box" class="hidden">
+        <h2 class="text-2xl font-bold text-gray-800 mb-1">POS Account Login</h2>
+        <p class="text-xs text-gray-500 mb-4">আপনার অ্যাকাউন্টে লগইন করুন</p>
+
+        <form onsubmit="handleLogin(event)" class="space-y-3">
+          <div>
+            <label class="text-xs font-semibold text-gray-600">Email Address</label>
+            <input type="email" id="login-email" required placeholder="name@company.com" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600">Password</label>
+            <input type="password" id="login-pass" required placeholder="••••••••" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition shadow">
+            Log In
+          </button>
+        </form>
+
+        <p class="text-xs text-center text-gray-600 mt-4">
+          নতুন অ্যাকাউন্ট খুলতে চান?
+          <button onclick="toggleAuth('signup')" class="text-indigo-600 font-bold hover:underline">Sign Up</button>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Header -->
-  <header class="bg-indigo-600 text-white p-4 shadow-lg sticky top-0 z-50 flex justify-between items-center">
-    <h1 class="text-xl font-bold">Easy POS System</h1>
-    <span id="tenant-badge" class="bg-indigo-800 text-xs px-2 py-1 rounded">Client POS</span>
+  <header class="bg-indigo-600 text-white p-4 shadow-lg sticky top-0 z-40 flex justify-between items-center">
+    <div>
+      <h1 class="text-lg font-bold" id="shop-title-display">Easy POS System</h1>
+      <span id="tenant-badge" class="bg-indigo-800 text-[10px] px-2 py-0.5 rounded font-mono">No Active Session</span>
+    </div>
+    <button onclick="logout()" class="text-xs bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded-lg text-white font-medium shadow">
+      Logout
+    </button>
   </header>
 
   <!-- Main Container -->
@@ -46,7 +116,6 @@
     <section id="tab-sales" class="tab-content hidden space-y-4">
       <h2 class="text-xl font-bold text-gray-800">New Sale / Invoice</h2>
       <div class="bg-white p-4 rounded-xl shadow space-y-3">
-        <input type="text" id="sale-client-id" placeholder="Client ID (e.g. client_01)" class="w-full p-2 border rounded">
         <input type="text" id="sale-customer" placeholder="Customer Name & Phone" class="w-full p-2 border rounded">
         <input type="text" id="sale-item" placeholder="Item Name" class="w-full p-2 border rounded">
         <div class="grid grid-cols-2 gap-2">
@@ -143,6 +212,79 @@
   </nav>
 
   <script>
+    // AUTH LOGIC
+    function checkSession() {
+      const activeTenant = localStorage.getItem('pos_tenant_id');
+      const shopName = localStorage.getItem('pos_shop_name');
+
+      if (!activeTenant) {
+        document.getElementById('auth-modal').classList.remove('hidden');
+      } else {
+        document.getElementById('auth-modal').classList.add('hidden');
+        document.getElementById('tenant-badge').innerText = `ID: ${activeTenant}`;
+        document.getElementById('shop-title-display').innerText = shopName || 'Easy POS System';
+      }
+    }
+
+    function toggleAuth(view) {
+      if (view === 'login') {
+        document.getElementById('signup-box').classList.add('hidden');
+        document.getElementById('login-box').classList.remove('hidden');
+      } else {
+        document.getElementById('login-box').classList.add('hidden');
+        document.getElementById('signup-box').classList.remove('hidden');
+      }
+    }
+
+    function handleSignup(e) {
+      e.preventDefault();
+      const shop = document.getElementById('signup-shop').value.trim();
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim().toLowerCase();
+      const pass = document.getElementById('signup-pass').value;
+
+      // Auto Generate Tenant ID
+      const tenantId = 'shop_' + Math.random().toString(36).substring(2, 7);
+
+      const newAccount = { tenantId, shop, name, email, pass };
+
+      // Save user to local registry (Replace this with API call to backend database later)
+      let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
+      users.push(newAccount);
+      localStorage.setItem('pos_users', JSON.stringify(users));
+
+      // Auto login after signup
+      localStorage.setItem('pos_tenant_id', tenantId);
+      localStorage.setItem('pos_shop_name', shop);
+
+      alert(`Account Created Successfully!\nYour Client ID is: ${tenantId}`);
+      checkSession();
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const pass = document.getElementById('login-pass').value;
+
+      let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
+      const user = users.find(u => u.email === email && u.pass === pass);
+
+      if (user) {
+        localStorage.setItem('pos_tenant_id', user.tenantId);
+        localStorage.setItem('pos_shop_name', user.shop);
+        checkSession();
+      } else {
+        alert("ইমেইল বা পাসওয়ার্ড ভুল হয়েছে!");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('pos_tenant_id');
+      localStorage.removeItem('pos_shop_name');
+      checkSession();
+    }
+
+    // UI TAB SWITCHING
     function switchTab(tabName) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.getElementById('tab-' + tabName).classList.remove('hidden');
@@ -163,7 +305,6 @@
     }
 
     async function processSale() {
-      const clientId = document.getElementById('sale-client-id').value || 'demo_client';
       const customer = document.getElementById('sale-customer').value;
       const item = document.getElementById('sale-item').value;
       const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
@@ -180,18 +321,23 @@
       doc.setFontSize(18);
       doc.text("INVOICE", 105, 20, null, null, "center");
       doc.setFontSize(12);
+      doc.text(`Shop: ${localStorage.getItem('pos_shop_name') || ''}`, 20, 30);
       doc.text(`Customer: ${customer}`, 20, 40);
       doc.text(`Item: ${item}`, 20, 50);
       doc.text(`Quantity: ${qty}`, 20, 60);
       doc.text(`Total Price: TK ${total}`, 20, 70);
 
-      const pdfBlob = doc.output('blob');
       const msg = encodeURIComponent(`Hello! Here is your invoice total: TK ${total}`);
       window.open(`https://wa.me/?text=${msg}`, '_blank');
     }
 
     function addPurchase() { alert("Purchase saved!"); }
     function addAccountEntry() { alert("Account entry recorded!"); }
+
+    // INITIALIZE ON LOAD
+    window.onload = function() {
+      checkSession();
+    };
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js');
