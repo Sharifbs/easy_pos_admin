@@ -58,7 +58,7 @@
     <section id="home" class="py-16 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white text-center px-4">
       <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">🚀 Premium POS Software</span>
       <h1 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight">সহজ ও আধুনিক পস সিস্টেম দিয়ে <br><span class="text-indigo-400">আপনার ব্যবসা পরিচালনা করুন</span></h1>
-      <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">স্ট্যান্ডার্ড প্রফেশনাল ইনভয়েস, কাস্টম লোগো, ক্যাশ কালেকশন, ক্যাশ অন ডেলিভারি (COD) ট্র্যাকিং এবং অ্যাকাউন্টস সিস্টেম।</p>
+      <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">স্ট্যান্ডার্ড প্রফেশনাল ইনভয়েস, কাস্টম লোগো, ক্যাশ কালেকশন, ক্যাশ অন ডেলিভারি (COD) ট্র্যাকিং এবং সুপার অ্যাডমিন প্যানেল।</p>
 
       <div class="mt-8 flex flex-wrap justify-center gap-4">
         <button onclick="openAuthModal('signup')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm">ফ্রি একাউন্ট খুলুন</button>
@@ -424,6 +424,37 @@
       </div>
     </section>
 
+    <!-- 7. SUPER ADMIN PANEL TAB -->
+    <section id="tab-admin" class="tab-content hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">👑 Super Admin Panel</h2>
+            <p class="text-xs text-slate-500">নিবন্ধিত সমস্ত সিস্টেম ইউজার এবং শপের তালিকা</p>
+          </div>
+          <div class="bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs px-3 py-1.5 rounded-xl">
+            Total Registered Shops: <span id="admin-user-count" class="text-indigo-900 text-sm">0</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-100 border-b">
+              <tr>
+                <th class="p-3">Tenant ID</th>
+                <th class="p-3">Shop / Company Name</th>
+                <th class="p-3">Owner Name</th>
+                <th class="p-3">Email Address</th>
+                <th class="p-3">Phone / Cell</th>
+                <th class="p-3 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- CASH COLLECTION MODAL -->
@@ -488,6 +519,7 @@
     <button onclick="switchTab('stock')" id="nav-stock" class="flex flex-col items-center"><span>📦</span><span>Stock</span></button>
     <button onclick="switchTab('accounts')" id="nav-accounts" class="flex flex-col items-center"><span>💰</span><span>Accounts</span></button>
     <button onclick="switchTab('settings')" id="nav-settings" class="flex flex-col items-center"><span>⚙️</span><span>Settings</span></button>
+    <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center text-amber-600 font-bold hidden"><span>👑</span><span>Admin</span></button>
   </nav>
 
   <!-- FOOTER -->
@@ -514,7 +546,6 @@
       document.getElementById('set-company-cell').value = localStorage.getItem('pos_company_cell') || '';
     }
 
-    // COD & DUE CALCULATION LOGIC
     function calcSaleTotal() {
       const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
       const price = parseFloat(document.getElementById('sale-price').value) || 0;
@@ -528,7 +559,7 @@
 
       if (isCod) {
         cashPayment = Math.max(0, totalBill - advance);
-        currentDue = 0; // COD Selected -> Cash Payment shown, No Due
+        currentDue = 0;
         document.getElementById('cod-status-badge').innerText = 'YES (COD)';
       } else {
         cashPayment = Math.max(0, advance + received);
@@ -694,7 +725,6 @@
       renderAllTables();
     }
 
-    // RESEND PDF DIRECTLY
     function downloadInvoicePDF(invNo) {
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       const inv = invoices.find(i => i.invNo === invNo);
@@ -703,7 +733,6 @@
       }
     }
 
-    // CASH COLLECTION MODAL & LOGIC
     function openCashCollectModal() {
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       const pendingInvoices = invoices.filter(i => i.currentDue > 0);
@@ -748,7 +777,6 @@
         inv.netPayable += collectAmount;
         localStorage.setItem('pos_invoices', JSON.stringify(invoices));
 
-        // Save into Accounts Ledger as Receipt
         let ledger = JSON.parse(localStorage.getItem('pos_ledger') || '[]');
         ledger.push({
           date: new Date().toISOString().split('T')[0],
@@ -905,6 +933,22 @@
         </tr>
       `).join('');
 
+      // Super Admin User List Render
+      let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
+      document.getElementById('admin-user-count').innerText = users.length;
+      document.getElementById('admin-users-tbody').innerHTML = users.map(u => `
+        <tr class="border-b">
+          <td class="p-3 font-mono text-indigo-600 font-bold">${u.tenantId || 'N/A'}</td>
+          <td class="p-3 font-bold text-slate-800">${u.shop || 'N/A'}</td>
+          <td class="p-3">${u.name || 'N/A'}</td>
+          <td class="p-3">${u.email || 'N/A'}</td>
+          <td class="p-3 font-semibold">${u.cell || 'N/A'}</td>
+          <td class="p-3 text-center">
+            <button onclick="deleteUser('${u.tenantId}')" class="bg-red-100 text-red-700 hover:bg-red-200 text-[10px] font-bold px-2 py-1 rounded">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+
       const totalSales = invoices.reduce((sum, i) => sum + i.totalBill, 0);
       const totalPurchases = purchases.reduce((sum, p) => sum + p.totalCost, 0);
       const totalExpenses = ledger.filter(l => l.type === 'Expense').reduce((sum, l) => sum + l.amount, 0);
@@ -923,17 +967,34 @@
       document.getElementById('summary-total-due').innerText = '৳ ' + totalDue;
     }
 
+    function deleteUser(tenantId) {
+      if (confirm("আপনি কি নিশ্চিত এই ইউজারকে ডিলিট করতে চান?")) {
+        let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
+        users = users.filter(u => u.tenantId !== tenantId);
+        localStorage.setItem('pos_users', JSON.stringify(users));
+        renderAllTables();
+      }
+    }
+
     function checkSession() {
       const activeTenant = localStorage.getItem('pos_tenant_id');
       if (activeTenant) {
         document.getElementById('tenant-badge').innerText = `ID: ${activeTenant}`;
         document.getElementById('auth-guest-btns').classList.add('hidden');
         document.getElementById('auth-user-btns').classList.remove('hidden');
+
+        if (activeTenant === 'super_admin_001') {
+          document.getElementById('nav-admin').classList.remove('hidden');
+        } else {
+          document.getElementById('nav-admin').classList.add('hidden');
+        }
+
         showDashboard();
       } else {
         document.getElementById('tenant-badge').innerText = 'Guest Mode';
         document.getElementById('auth-guest-btns').classList.remove('hidden');
         document.getElementById('auth-user-btns').classList.add('hidden');
+        document.getElementById('nav-admin').classList.add('hidden');
         showLanding();
       }
     }
@@ -1000,6 +1061,16 @@
       const email = document.getElementById('login-email').value.trim().toLowerCase();
       const pass = document.getElementById('login-pass').value;
 
+      // Super Admin Login Logic
+      if (email === 'admin@easypos.com' && pass === 'admin123') {
+        localStorage.setItem('pos_tenant_id', 'super_admin_001');
+        localStorage.setItem('pos_shop_name', 'Super Admin');
+        closeAuthModal();
+        checkSession();
+        switchTab('admin');
+        return;
+      }
+
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
       const user = users.find(u => u.email === email && u.pass === pass);
 
@@ -1028,7 +1099,7 @@
       document.getElementById('tab-' + tabName).classList.remove('hidden');
 
       document.querySelectorAll('#bottom-nav button').forEach(btn => {
-        btn.classList.remove('text-indigo-600', 'font-bold');
+        btn.classList.remove('text-indigo-600', 'font-bold', 'text-amber-600');
         btn.classList.add('text-slate-600');
       });
       const activeNav = document.getElementById('nav-' + tabName);
