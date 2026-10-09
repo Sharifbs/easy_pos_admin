@@ -54,7 +54,6 @@
 
   <!-- LANDING PAGE -->
   <div id="website-landing">
-    <!-- HOME SECTION -->
     <section id="home" class="py-16 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white text-center px-4">
       <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">🚀 Premium POS Software</span>
       <h1 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight">সহজ ও আধুনিক পস সিস্টেম দিয়ে <br><span class="text-indigo-400">আপনার ব্যবসা পরিচালনা করুন</span></h1>
@@ -66,7 +65,6 @@
       </div>
     </section>
 
-    <!-- SERVICES SECTION -->
     <section id="services" class="py-12 bg-white">
       <div class="max-w-6xl mx-auto px-4">
         <div class="text-center mb-10">
@@ -96,7 +94,6 @@
       </div>
     </section>
 
-    <!-- CONTACT SECTION -->
     <section id="contact" class="py-12 bg-slate-100 border-t border-slate-200">
       <div class="max-w-4xl mx-auto px-4">
         <div class="bg-white p-6 md:p-8 rounded-3xl shadow-md grid md:grid-cols-2 gap-8 items-center">
@@ -426,13 +423,13 @@
       </div>
     </section>
 
-    <!-- 7. SUPER ADMIN PANEL TAB -->
+    <!-- 7. SUPER ADMIN PANEL TAB WITH EDIT & RESET PASSWORD -->
     <section id="tab-admin" class="tab-content hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
         <div class="flex justify-between items-center mb-4">
           <div>
             <h2 class="text-xl font-bold text-slate-900">👑 Super Admin Panel</h2>
-            <p class="text-xs text-slate-500">নিবন্ধিত সমস্ত সিস্টেম ইউজার এবং শপের তালিকা</p>
+            <p class="text-xs text-slate-500">নিবন্ধিত সমস্ত সিস্টেম ইউজার, পাসওয়ার্ড রিসেট ও এডিট অপশন</p>
           </div>
           <div class="bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs px-3 py-1.5 rounded-xl">
             Total Registered Shops: <span id="admin-user-count" class="text-indigo-900 text-sm">0</span>
@@ -444,11 +441,11 @@
             <thead class="bg-slate-100 border-b">
               <tr>
                 <th class="p-3">Tenant ID</th>
-                <th class="p-3">Shop / Company Name</th>
+                <th class="p-3">Shop Name</th>
                 <th class="p-3">Owner Name</th>
                 <th class="p-3">Email Address</th>
-                <th class="p-3">Phone / Cell</th>
-                <th class="p-3 text-center">Action</th>
+                <th class="p-3">Phone</th>
+                <th class="p-3 text-center">Actions</th>
               </tr>
             </thead>
             <tbody id="admin-users-tbody"></tbody>
@@ -482,11 +479,40 @@
     </div>
   </div>
 
-  <!-- AUTH MODAL -->
+  <!-- USER EDIT MODAL FOR SUPER ADMIN -->
+  <div id="admin-edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+      <button onclick="closeAdminEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+      <h2 class="text-lg font-bold text-slate-800 mb-3">✏️ Edit Tenant User Details</h2>
+      <form onsubmit="saveUserEdit(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="edit-tenant-id">
+        <div>
+          <label class="block text-slate-600 font-semibold mb-1">Shop / Store Name</label>
+          <input type="text" id="edit-shop" required class="w-full p-2.5 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-slate-600 font-semibold mb-1">Owner Name</label>
+          <input type="text" id="edit-name" required class="w-full p-2.5 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-slate-600 font-semibold mb-1">Email Address</label>
+          <input type="email" id="edit-email" required class="w-full p-2.5 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-slate-600 font-semibold mb-1">Phone / Cell</label>
+          <input type="text" id="edit-cell" required class="w-full p-2.5 border rounded-lg">
+        </div>
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg shadow">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL (LOGIN / SIGNUP / FORGOT PASS) -->
   <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
       <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
 
+      <!-- SIGNUP BOX -->
       <div id="signup-box">
         <h2 class="text-2xl font-bold text-slate-800 mb-1">Create POS Account</h2>
         <form onsubmit="handleSignup(event)" class="space-y-3 mt-4 text-xs">
@@ -501,15 +527,32 @@
         <p class="text-xs text-center text-slate-600 mt-4">আগে থেকেই অ্যাকাউন্ট আছে? <button onclick="toggleAuth('login')" class="text-indigo-600 font-bold">Log In</button></p>
       </div>
 
+      <!-- LOGIN BOX -->
       <div id="login-box" class="hidden">
         <h2 class="text-2xl font-bold text-slate-800 mb-1">POS Login</h2>
         <form onsubmit="handleLogin(event)" class="space-y-3 mt-4 text-xs">
           <input type="email" id="login-email" required placeholder="Email Address" class="w-full p-2.5 border rounded-lg">
           <input type="password" id="login-pass" required placeholder="Password" class="w-full p-2.5 border rounded-lg">
+          <div class="flex justify-between items-center text-[11px]">
+            <span></span>
+            <button type="button" onclick="toggleAuth('forgot')" class="text-rose-600 font-semibold hover:underline">Forgot Password?</button>
+          </div>
           <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-lg">Log In</button>
         </form>
         <p class="text-xs text-center text-slate-600 mt-4">নতুন অ্যাকাউন্ট খুলবেন? <button onclick="toggleAuth('signup')" class="text-indigo-600 font-bold">Sign Up</button></p>
       </div>
+
+      <!-- FORGOT PASSWORD BOX -->
+      <div id="forgot-box" class="hidden">
+        <h2 class="text-xl font-bold text-slate-800 mb-1">Reset Password</h2>
+        <p class="text-xs text-slate-500 mb-4">আপনার নিবন্ধিত ইমেইল আইডি লিখুন, পাসওয়ার্ড ডিফল্ট (123456) রিসেট হয়ে যাবে।</p>
+        <form onsubmit="handleCustomerResetPass(event)" class="space-y-3 text-xs">
+          <input type="email" id="forgot-email" required placeholder="Enter Your Registered Email" class="w-full p-2.5 border rounded-lg">
+          <button type="submit" class="w-full bg-amber-600 text-white font-bold py-2.5 rounded-lg hover:bg-amber-700 transition">Reset Password</button>
+        </form>
+        <p class="text-xs text-center text-slate-600 mt-4"><button onclick="toggleAuth('login')" class="text-indigo-600 font-bold">Back to Login</button></p>
+      </div>
+
     </div>
   </div>
 
@@ -935,6 +978,7 @@
         </tr>
       `).join('');
 
+      // SUPER ADMIN USER MANAGEMENT TABLE WITH EDIT & RESET PASS BUTTONS
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
       document.getElementById('admin-user-count').innerText = users.length;
       document.getElementById('admin-users-tbody').innerHTML = users.map(u => `
@@ -944,7 +988,9 @@
           <td class="p-3">${u.name || 'N/A'}</td>
           <td class="p-3">${u.email || 'N/A'}</td>
           <td class="p-3 font-semibold">${u.cell || 'N/A'}</td>
-          <td class="p-3 text-center">
+          <td class="p-3 text-center flex items-center justify-center gap-1">
+            <button onclick="openAdminEditModal('${u.tenantId}')" class="bg-indigo-100 text-indigo-700 hover:bg-indigo-200 text-[10px] font-bold px-2 py-1 rounded">Edit</button>
+            <button onclick="adminResetUserPass('${u.tenantId}')" class="bg-amber-100 text-amber-800 hover:bg-amber-200 text-[10px] font-bold px-2 py-1 rounded">Reset Pass</button>
             <button onclick="deleteUser('${u.tenantId}')" class="bg-red-100 text-red-700 hover:bg-red-200 text-[10px] font-bold px-2 py-1 rounded">Delete</button>
           </td>
         </tr>
@@ -966,6 +1012,71 @@
       document.getElementById('summary-inv-count').innerText = invoices.length;
       document.getElementById('summary-stock-items').innerText = stock.length;
       document.getElementById('summary-total-due').innerText = '৳ ' + totalDue;
+    }
+
+    // ADMIN USER EDIT FUNCTIONS
+    function openAdminEditModal(tenantId) {
+      let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
+      const user = users.find(u => u.tenantId === tenantId);
+      if (user) {
+        document.getElementById('edit-tenant-id').value = user.tenantId;
+        document.getElementById('edit-shop').value = user.shop || '';
+        document.getElementById('edit-name').value = user.name || '';
+        document.getElementById('edit-email').value = user.email || '';
+        document.getElementById('edit-cell').value = user.cell || '';
+        document.getElementById('admin-edit-modal').classList.remove('hidden');
+      }
+    }
+
+    function closeAdminEditModal() {
+      document.getElementById('admin-edit-modal').classList.add('hidden');
+    }
+
+    function saveUserEdit(e) {
+      e.preventDefault();
+      const tenantId = document.getElementById('edit-tenant-id').value;
+      let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
+      const user = users.find(u => u.tenantId === tenantId);
+      if (user) {
+        user.shop = document.getElementById('edit-shop').value.trim();
+        user.name = document.getElementById('edit-name').value.trim();
+        user.email = document.getElementById('edit-email').value.trim().toLowerCase();
+        user.cell = document.getElementById('edit-cell').value.trim();
+        localStorage.setItem('pos_users', JSON.stringify(users));
+        alert("ইউজার তথ্য সফলভাবে আপডেট হয়েছে!");
+        closeAdminEditModal();
+        renderAllTables();
+      }
+    }
+
+    // ADMIN RESET USER PASSWORD
+    function adminResetUserPass(tenantId) {
+      let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
+      const user = users.find(u => u.tenantId === tenantId);
+      if (user) {
+        if (confirm(`আপনি কি নিশ্চিত '${user.shop}' অ্যাকাউন্টের পাসওয়ার্ড রিসেট করে '123456' করতে চান?`)) {
+          user.pass = '123456';
+          localStorage.setItem('pos_users', JSON.stringify(users));
+          alert(`পাসওয়ার্ড রিসেট করা হয়েছে! নতুন পাসওয়ার্ড: 123456`);
+        }
+      }
+    }
+
+    // CUSTOMER FORGOT PASSWORD RESET LOGIC
+    function handleCustomerResetPass(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgot-email').value.trim().toLowerCase();
+      let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
+      const user = users.find(u => u.email.toLowerCase() === email);
+
+      if (user) {
+        user.pass = '123456';
+        localStorage.setItem('pos_users', JSON.stringify(users));
+        alert("আপনার পাসওয়ার্ড সফলভাবে রিসেট করা হয়েছে! আপনার নতুন পাসওয়ার্ড: 123456");
+        toggleAuth('login');
+      } else {
+        alert("এই ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি!");
+      }
     }
 
     function deleteUser(tenantId) {
@@ -1023,12 +1134,16 @@
     }
 
     function toggleAuth(view) {
+      document.getElementById('signup-box').classList.add('hidden');
+      document.getElementById('login-box').classList.add('hidden');
+      document.getElementById('forgot-box').classList.add('hidden');
+
       if (view === 'login') {
-        document.getElementById('signup-box').classList.add('hidden');
         document.getElementById('login-box').classList.remove('hidden');
-      } else {
-        document.getElementById('login-box').classList.add('hidden');
+      } else if (view === 'signup') {
         document.getElementById('signup-box').classList.remove('hidden');
+      } else if (view === 'forgot') {
+        document.getElementById('forgot-box').classList.remove('hidden');
       }
     }
 
@@ -1057,13 +1172,11 @@
       initFormDates();
     }
 
-    // ABSOLUTE ADMIN LOGIN logic
     function handleLogin(e) {
       e.preventDefault();
       const rawEmail = (document.getElementById('login-email').value || '').trim().toLowerCase();
       const rawPass = (document.getElementById('login-pass').value || '').trim();
 
-      // Check Admin Credentials
       if (rawEmail === 'admin@easypos.com' || rawEmail.includes('admin@easypos.com')) {
         localStorage.setItem('pos_tenant_id', 'super_admin_001');
         localStorage.setItem('pos_shop_name', 'Super Admin');
@@ -1117,7 +1230,6 @@
       calcSaleTotal();
     };
 
-    // UNREGISTER SERVICE WORKERS TO CLEAR CACHE
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(function(registrations) {
         for(let registration of registrations) {
