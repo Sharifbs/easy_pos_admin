@@ -53,8 +53,9 @@
     </div>
   </header>
 
-  <!-- LANDING PAGE -->
+  <!-- LANDING PAGE WITH HOME, SERVICES & CONTACT SECTIONS -->
   <div id="website-landing">
+    <!-- HOME SECTION -->
     <section id="home" class="py-16 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white text-center px-4">
       <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">🚀 Premium POS Software</span>
       <h1 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight">সহজ ও আধুনিক পস সিস্টেম দিয়ে <br><span class="text-indigo-400">আপনার ব্যবসা পরিচালনা করুন</span></h1>
@@ -63,6 +64,75 @@
       <div class="mt-8 flex flex-wrap justify-center gap-4">
         <button onclick="openAuthModal('signup')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm">ফ্রি একাউন্ট খুলুন</button>
         <a href="tel:01716247713" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm flex items-center gap-2">📞 হটলাইন: 01716247713</a>
+      </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" class="py-12 bg-white">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-bold text-slate-900">আমাদের সেবাসমূহ</h2>
+          <p class="text-xs text-slate-500 mt-1">আপনার ব্যবসার প্রতিটি ধাপকে সহজ করতে আমাদের প্ল্যাটফর্মের বৈশিষ্ট্যসমূহ</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-4">🧾</div>
+            <h3 class="font-bold text-lg mb-2">স্ট্যান্ডার্ড ইনভয়েস ও সেলস</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">পিডিএফ ফরম্যাটে প্রফেশনাল মেমো জেনারেট করুন এবং অটো বারকোড ও লোগো সহ কাস্টমারকে হোয়াটসঅ্যাপে পাঠান।</p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4">📦</div>
+            <h3 class="font-bold text-lg mb-2">অটোমেটেড স্টক ইনভেন্টরি</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">পণ্য কেনার সাথে সাথে স্টক স্বয়ংক্রিয়ভাবে বৃদ্ধি পাবে এবং প্রতিটি বিক্রয়ের সাথে সাথে স্টক থেকে কমে যাবে।</p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-4">💰</div>
+            <h3 class="font-bold text-lg mb-2">ইনকাম ও এক্সপেনডিচার লেজার</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">দৈনিক খরচ ও জমার হিসাব রাখুন এবং রিয়েল-টাইমে ব্যবসার নেট প্রফিট/লস স্টেটমেন্ট দেখুন।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-12 bg-slate-100 border-t border-slate-200">
+      <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-md grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">আমাদের সাথে যোগাযোগ করুন</h2>
+            <p class="text-xs text-slate-500 mb-6">যে কোনো প্রয়োজন বা সহায়তার জন্য সরাসরি কল করুন অথবা বার্তা পাঠান।</p>
+
+            <div class="space-y-4 text-sm font-medium">
+              <div class="flex items-center gap-3">
+                <span class="p-2.5 bg-emerald-100 text-emerald-600 rounded-xl">📞</span>
+                <div>
+                  <p class="text-[10px] text-slate-400">হটলাইন নম্বর</p>
+                  <a href="tel:01716247713" class="font-bold text-slate-800 hover:text-emerald-600">01716247713</a>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="p-2.5 bg-indigo-100 text-indigo-600 rounded-xl">💬</span>
+                <div>
+                  <p class="text-[10px] text-slate-400">WhatsApp সাপোর্ট</p>
+                  <a href="https://wa.me/8801716247713" target="_blank" class="font-bold text-slate-800 hover:text-indigo-600">+880 1716 247713</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form onsubmit="event.preventDefault(); alert('ধন্যবাদ! আপনার বার্তাটি প্রাপ্ত হয়েছে, আমরা শীঘ্রই যোগাযোগ করব।');" class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <input type="text" placeholder="আপনার নাম" required class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <input type="tel" placeholder="মোবাইল নম্বর" required class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <textarea placeholder="আপনার বার্তা লিখুন..." rows="3" class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            <button type="submit" class="w-full bg-slate-900 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-slate-800 transition shadow">
+              মেসেজ পাঠান
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   </div>
@@ -325,7 +395,7 @@
       </div>
     </section>
 
-    <!-- 6. SETTINGS TAB (COMPANY / STORE INFO & LOGO) -->
+    <!-- 6. SETTINGS TAB -->
     <section id="tab-settings" class="tab-content hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 max-w-xl mx-auto">
         <h2 class="text-xl font-bold text-slate-800 mb-4">Store & Invoice Settings</h2>
@@ -404,7 +474,6 @@
   </footer>
 
   <script>
-    // FORM SETUP & INVOICE NUMBER GENERATOR
     function initFormDates() {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('sale-date').value = today;
@@ -415,13 +484,11 @@
       const nextInvNum = 'INV-' + (1001 + invoices.length);
       document.getElementById('sale-inv-no').value = nextInvNum;
 
-      // Populate Settings Form
       document.getElementById('set-company-name').value = localStorage.getItem('pos_company_name') || localStorage.getItem('pos_shop_name') || '';
       document.getElementById('set-company-address').value = localStorage.getItem('pos_company_address') || '';
       document.getElementById('set-company-cell').value = localStorage.getItem('pos_company_cell') || '';
     }
 
-    // CALCULATION
     function calcSaleTotal() {
       const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
       const price = parseFloat(document.getElementById('sale-price').value) || 0;
@@ -440,7 +507,6 @@
       document.getElementById('cod-status-badge').innerText = isCod ? 'YES (COD)' : 'NO';
     }
 
-    // NUMBER TO WORDS CONVERTER
     function numberToWords(num) {
       if (!num || num === 0) return 'Zero Taka Only';
       const a = ['','One ','Two ','Three ','Four ','Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
@@ -460,7 +526,6 @@
       return inWords(num).trim() + ' Taka Only';
     }
 
-    // PROCESS SALE & GENERATE STANDARD PDF
     function processSale(actionType) {
       const invNo = document.getElementById('sale-inv-no').value;
       const date = document.getElementById('sale-date').value;
@@ -483,7 +548,6 @@
         return;
       }
 
-      // Deduct Stock
       let stock = JSON.parse(localStorage.getItem('pos_stock') || '[]');
       const stockItem = stock.find(s => s.name.toLowerCase() === item.toLowerCase());
       if (stockItem) {
@@ -491,13 +555,11 @@
         localStorage.setItem('pos_stock', JSON.stringify(stock));
       }
 
-      // Save Invoice
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       const invData = { invNo, date, customer, phone, address, item, qty, price, totalBill, netPayable, currentDue, isCod };
       invoices.push(invData);
       localStorage.setItem('pos_invoices', JSON.stringify(invoices));
 
-      // PDF STANDARD FORMAT GENERATION
       if (actionType === 'pdf') {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
@@ -507,7 +569,6 @@
         const companyCell = localStorage.getItem('pos_company_cell') || '01716247713';
         const logoData = localStorage.getItem('pos_company_logo');
 
-        // Invoice Header
         doc.setFontSize(22);
         doc.setFont("helvetica", "bold");
         doc.text("Invoice", 14, 20);
@@ -519,7 +580,6 @@
         doc.text(companyAddress, 14, 34);
         doc.text(`Call : ${companyCell}`, 14, 39);
 
-        // Render Store Logo if Uploaded
         if (logoData) {
           try {
             doc.addImage(logoData, 'JPEG', 150, 12, 45, 25);
@@ -529,7 +589,6 @@
         doc.setLineWidth(0.5);
         doc.line(14, 44, 196, 44);
 
-        // Customer & Invoice Details
         doc.setFontSize(9);
         doc.setFont("helvetica", "bold");
         doc.text(`Date        : ${date}`, 14, 52);
@@ -537,10 +596,8 @@
         doc.text(`Address : ${address}`, 14, 64);
 
         doc.text(`Mobile : ${phone}`, 85, 52);
-
         doc.text(`Invoice No : ${invNo}`, 145, 52);
 
-        // Item Table
         doc.autoTable({
           startY: 70,
           head: [['SL', 'Product', 'Quantity', 'Price', 'Total Price']],
@@ -554,11 +611,9 @@
 
         const finalY = doc.lastAutoTable.finalY || 90;
 
-        // In Words
         doc.setFont("helvetica", "bold");
         doc.text(`In words :   ${numberToWords(totalBill)}`, 14, finalY + 12);
 
-        // Grand Total Box Right Side
         doc.autoTable({
           startY: finalY + 5,
           margin: { left: 135 },
@@ -572,7 +627,6 @@
           styles: { fontSize: 9, fontStyle: 'bold', halign: 'right' }
         });
 
-        // Signature and Footer
         const footerY = finalY + 45;
         doc.line(14, footerY, 65, footerY);
         doc.text("Signature", 30, footerY + 5);
@@ -596,7 +650,6 @@
       renderAllTables();
     }
 
-    // SAVE STORE SETTINGS
     function saveCompanySettings(e) {
       e.preventDefault();
       const name = document.getElementById('set-company-name').value;
@@ -620,7 +673,6 @@
       }
     }
 
-    // RE-SEND WHATSAPP
     function resendInvoice(invNo) {
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       const inv = invoices.find(i => i.invNo === invNo);
@@ -630,7 +682,6 @@
       }
     }
 
-    // PURCHASE & ACCOUNTS
     function calcPurTotal() {
       const qty = parseFloat(document.getElementById('pur-qty').value) || 0;
       const cost = parseFloat(document.getElementById('pur-cost').value) || 0;
@@ -693,7 +744,6 @@
       renderAllTables();
     }
 
-    // RENDER TABLES & STATS
     function renderAllTables() {
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       document.getElementById('invoice-list-tbody').innerHTML = invoices.map(i => `
@@ -758,7 +808,6 @@
       document.getElementById('summary-total-due').innerText = '৳ ' + totalDue;
     }
 
-    // SESSION & VIEW NAVIGATION
     function checkSession() {
       const activeTenant = localStorage.getItem('pos_tenant_id');
       if (activeTenant) {
