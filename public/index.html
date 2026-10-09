@@ -3,45 +3,369 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Easy POS Admin</title>
+  <title>Easy POS System & Business Solutions</title>
   <link rel="manifest" href="/manifest.json">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Hind Siliguri', sans-serif; }
+    .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); }
+  </style>
 </head>
-<body class="bg-gray-100 min-h-screen pb-20">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
 
-  <!-- AUTH MODAL (Signup / Login) -->
-  <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+  <!-- TOP HEADER / NAVBAR -->
+  <header class="sticky top-0 z-50 glass border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showLanding()">
+        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md">
+          E
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-900 leading-tight">Easy POS</h1>
+          <p class="text-[10px] text-slate-500 font-medium">Smart Business Manager</p>
+        </div>
+      </div>
+
+      <!-- Main Navigation Menu -->
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-slate-600">
+        <a href="#home" onclick="showLanding()" class="hover:text-indigo-600 transition">Home</a>
+        <a href="#services" onclick="showLanding()" class="hover:text-indigo-600 transition">Services</a>
+        <a href="#contact" onclick="showLanding()" class="hover:text-indigo-600 transition">Contact</a>
+        <span id="tenant-badge" class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-mono">Guest Mode</span>
+      </nav>
+
+      <!-- Right Action Buttons -->
+      <div class="flex items-center space-x-2">
+        <a href="tel:01716247713" class="hidden sm:flex items-center bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-emerald-100 transition shadow-sm">
+          📞 01716247713
+        </a>
+
+        <!-- Guest State Buttons -->
+        <div id="auth-guest-btns" class="flex items-center space-x-2">
+          <button onclick="openAuthModal('login')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold px-3 py-2 rounded-lg transition">
+            Login
+          </button>
+          <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition shadow-md shadow-indigo-200">
+            Sign Up
+          </button>
+        </div>
+
+        <!-- Logged In State Buttons -->
+        <div id="auth-user-btns" class="hidden flex items-center space-x-2">
+          <button onclick="showDashboard()" class="bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow">
+            Open App
+          </button>
+          <button onclick="logout()" class="bg-red-500 text-white hover:bg-red-600 text-xs font-bold px-3 py-2 rounded-lg transition">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- LANDING PAGE CONTENT -->
+  <div id="website-landing">
+    <!-- HERO SECTION -->
+    <section id="home" class="relative overflow-hidden py-12 md:py-20 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white">
+      <div class="max-w-6xl mx-auto px-4 text-center">
+        <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">
+          🚀 অল-ইন-ওয়ান পয়েন্ট অফ সেল সফটওয়্যার
+        </span>
+        <h1 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight">
+          সহজ ও আধুনিক পস সিস্টেম দিয়ে <br><span class="text-indigo-400">আপনার ব্যবসা পরিচালনা করুন</span>
+        </h1>
+        <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">
+          ইনভয়েস তৈরি, কাস্টমার রসিদ, ক্রয় হিসাব, স্টক ম্যানেজমেন্ট এবং অ্যাকাউন্টস এখন এক ক্লিকেই সামলান।
+        </p>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <button onclick="openAuthModal('signup')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm">
+            ফ্রি একাউন্ট খুলুন
+          </button>
+          <a href="tel:01716247713" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm flex items-center gap-2">
+            <span>📞 হটলাইন: 01716247713</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOME SERVICES SECTION -->
+    <section id="services" class="py-12 bg-white">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-bold text-slate-900">আমাদের সেবাসমূহ</h2>
+          <p class="text-xs text-slate-500 mt-1">আপনার ব্যবসার প্রতিটি ধাপকে সহজ করতে যা থাকছে</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-4">🧾</div>
+            <h3 class="font-bold text-lg mb-2">ইনভয়েস ও সেলস</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">সহজেই কাস্টমার ইনভয়েস তৈরি করুন এবং হোয়াটসঅ্যাপে পিডিএফ আকারে শেয়ার করুন।</p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4">📦</div>
+            <h3 class="font-bold text-lg mb-2">স্টক ট্র্যাকিং</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">পণ্য ক্রয় ও বিক্রয়ের সাথে সাথে স্বয়ংক্রিয় স্টক আপডেট এবং রিয়েল-টাইম কোয়ান্টিটি চেক।</p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-4">💰</div>
+            <h3 class="font-bold text-lg mb-2">হিসাব ও ক্যাশ খাতা</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">জমা ও খরচের আলাদা হিসাব রাখুন, ক্যাশ ফ্লো নিয়ন্ত্রণ করুন খুব সহজে।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-12 bg-slate-100">
+      <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-md grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">আমাদের সাথে যোগাযোগ করুন</h2>
+            <p class="text-xs text-slate-500 mb-6">যে কোনো প্রয়োজন বা সহায়তার জন্য কল করুন অথবা মেসেজ দিন।</p>
+
+            <div class="space-y-4 text-sm font-medium">
+              <div class="flex items-center gap-3">
+                <span class="p-2 bg-emerald-100 text-emerald-600 rounded-lg">📞</span>
+                <div>
+                  <p class="text-[10px] text-slate-400">হটলাইন সাপোর্ট</p>
+                  <a href="tel:01716247713" class="font-bold text-slate-800 hover:text-emerald-600">01716247713</a>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="p-2 bg-indigo-100 text-indigo-600 rounded-lg">💬</span>
+                <div>
+                  <p class="text-[10px] text-slate-400">WhatsApp সাপোর্টিং</p>
+                  <a href="https://wa.me/8801716247713" target="_blank" class="font-bold text-slate-800 hover:text-indigo-600">+880 1716 247713</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form onsubmit="event.preventDefault(); alert('ধন্যবাদ! আমরা খুব শীঘ্রই আপনার সাথে যোগাযোগ করব।');" class="space-y-3 bg-slate-50 p-4 rounded-xl">
+            <input type="text" placeholder="আপনার নাম" required class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <input type="tel" placeholder="মোবাইল নম্বর" required class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <textarea placeholder="আপনার মেসেজ..." rows="3" class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            <button type="submit" class="w-full bg-slate-900 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-slate-800 transition">
+              মেসেজ পাঠান
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- APP DASHBOARD CONTAINER -->
+  <main id="app-dashboard" class="max-w-2xl mx-auto p-4 hidden flex-grow w-full">
+
+    <!-- 1. DASHBOARD TAB -->
+    <section id="tab-dashboard" class="tab-content space-y-4">
+      <h2 class="text-xl font-bold text-slate-800">Dashboard</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
+          <p class="text-xs text-slate-500 font-semibold uppercase">Total Invoices</p>
+          <h3 id="dash-invoices" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-emerald-500">
+          <p class="text-xs text-slate-500 font-semibold uppercase">Total Receipts</p>
+          <h3 id="dash-receipts" class="text-2xl font-bold text-slate-800 mt-1">৳ 0</h3>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-rose-500">
+          <p class="text-xs text-slate-500 font-semibold uppercase">Total Expense</p>
+          <h3 id="dash-expense" class="text-2xl font-bold text-slate-800 mt-1">৳ 0</h3>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-amber-500">
+          <p class="text-xs text-slate-500 font-semibold uppercase">Total Stock Items</p>
+          <h3 id="dash-stock" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SALES TAB (MATCHED DESIGN WITH COD OPTION) -->
+    <section id="tab-sales" class="tab-content hidden space-y-4">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-lg mx-auto">
+        <h2 class="text-center text-lg font-black text-slate-800 uppercase tracking-wide border-b pb-3 mb-4">
+          EASY POS - SALES & INVOICE
+        </h2>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Select Client / Store</label>
+            <select id="sale-client" class="w-full p-2.5 border rounded-lg bg-white outline-none focus:border-indigo-500">
+              <option value="Rahim Store (CUST-001)">Rahim Store (CUST-001)</option>
+              <option value="Demo Shop (CUST-002)">Demo Shop (CUST-002)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Customer Name</label>
+            <input type="text" id="sale-customer" placeholder="Enter Customer Name" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Phone Number</label>
+            <input type="tel" id="sale-phone" placeholder="Enter Phone Number" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Product / Item Name</label>
+            <input type="text" id="sale-item" placeholder="Item Name" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-600 font-semibold mb-1">Quantity</label>
+              <input type="number" id="sale-qty" value="1" min="1" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+            </div>
+            <div>
+              <label class="block text-slate-600 font-semibold mb-1">Unit Price (TK)</label>
+              <input type="number" id="sale-price" value="0" min="0" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-600 font-semibold mb-1">Advance (TK)</label>
+              <input type="number" id="sale-advance" value="0" min="0" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+            </div>
+            <div>
+              <label class="block text-slate-600 font-semibold mb-1">Received (TK)</label>
+              <input type="number" id="sale-received" value="0" min="0" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+            </div>
+          </div>
+
+          <!-- SUMMARY CARD -->
+          <div class="bg-slate-50 border border-dashed border-slate-300 p-3.5 rounded-xl space-y-1.5 mt-2">
+            <div class="flex justify-between text-slate-600 font-semibold">
+              <span>Total Bill:</span>
+              <span id="sale-total-bill">0 TK</span>
+            </div>
+            <div class="flex justify-between text-slate-600 font-semibold">
+              <span>Net Payable:</span>
+              <span id="sale-net-payable">0 TK</span>
+            </div>
+            <div class="flex justify-between text-rose-600 font-bold text-sm pt-1 border-t border-slate-200">
+              <span>Current Due:</span>
+              <span id="sale-current-due">0 TK</span>
+            </div>
+          </div>
+
+          <!-- CASH ON DELIVERY OPTION -->
+          <div class="flex items-center justify-between p-3 bg-amber-50 border border-amber-200 rounded-xl mt-3">
+            <div class="flex items-center space-x-2">
+              <input type="checkbox" id="sale-cod" onchange="calcSaleTotal()" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500">
+              <label for="sale-cod" class="font-bold text-slate-800 text-xs">Cash on Delivery (COD)</label>
+            </div>
+            <span id="cod-status-badge" class="text-[10px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded-full">NO</span>
+          </div>
+
+          <button onclick="processSale()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow-md uppercase tracking-wider text-xs mt-3">
+            SHARE INVOICE VIA WHATSAPP
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PURCHASE TAB -->
+    <section id="tab-purchase" class="tab-content hidden space-y-4">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-lg mx-auto">
+        <h2 class="text-xl font-bold text-slate-800 mb-4">Purchase Entry</h2>
+        <div class="space-y-3">
+          <input type="text" id="pur-supplier" placeholder="Supplier Name" class="w-full p-2.5 border rounded-lg text-xs">
+          <input type="text" id="pur-item" placeholder="Item Name" class="w-full p-2.5 border rounded-lg text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <input type="number" id="pur-qty" placeholder="Qty" class="p-2.5 border rounded-lg text-xs">
+            <input type="number" id="pur-cost" placeholder="Unit Cost Price" class="p-2.5 border rounded-lg text-xs">
+          </div>
+          <button onclick="addPurchase()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow text-xs">
+            Save Purchase
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. STOCK TAB -->
+    <section id="tab-stock" class="tab-content hidden space-y-4">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-2xl mx-auto">
+        <h2 class="text-xl font-bold text-slate-800 mb-4">Stock Inventory</h2>
+        <div class="rounded-xl overflow-hidden border">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-100 border-b">
+              <tr>
+                <th class="p-3">Item Name</th>
+                <th class="p-3">In Stock</th>
+                <th class="p-3">Price</th>
+              </tr>
+            </thead>
+            <tbody id="stock-table-body">
+              <tr>
+                <td colspan="3" class="p-3 text-center text-slate-500">No stock data available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ACCOUNTS TAB -->
+    <section id="tab-accounts" class="tab-content hidden space-y-4">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-lg mx-auto">
+        <h2 class="text-xl font-bold text-slate-800 mb-4">Accounts & Ledger</h2>
+        <div class="space-y-3">
+          <select id="acc-type" class="w-full p-2.5 border rounded-lg text-xs bg-white">
+            <option value="Receipt">Receipt (জমা)</option>
+            <option value="Expense">Expense (খরচ)</option>
+          </select>
+          <input type="text" id="acc-desc" placeholder="Description / Particulars" class="w-full p-2.5 border rounded-lg text-xs">
+          <input type="number" id="acc-amount" placeholder="Amount (৳)" class="w-full p-2.5 border rounded-lg text-xs">
+          <button onclick="addAccountEntry()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition shadow text-xs">
+            Record Entry
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- AUTH MODAL -->
+  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
 
       <!-- SIGNUP FORM -->
       <div id="signup-box">
-        <h2 class="text-2xl font-bold text-gray-800 mb-1">Create New POS Account</h2>
-        <p class="text-xs text-gray-500 mb-4">আপনার ব্যবসার জন্য নতুন অ্যাকাউন্ট তৈরি করুন</p>
+        <h2 class="text-2xl font-bold text-slate-800 mb-1">Create New POS Account</h2>
+        <p class="text-xs text-slate-500 mb-4">আপনার ব্যবসার জন্য নতুন অ্যাকাউন্ট তৈরি করুন</p>
 
         <form onsubmit="handleSignup(event)" class="space-y-3">
           <div>
-            <label class="text-xs font-semibold text-gray-600">Business / Shop Name</label>
-            <input type="text" id="signup-shop" required placeholder="e.g. Acme Enterprise" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-xs font-semibold text-slate-600">Business / Shop Name</label>
+            <input type="text" id="signup-shop" required placeholder="e.g. Acme Enterprise" class="w-full p-2.5 border rounded-lg text-xs">
           </div>
           <div>
-            <label class="text-xs font-semibold text-gray-600">Owner Name</label>
-            <input type="text" id="signup-name" required placeholder="আপনার নাম" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-xs font-semibold text-slate-600">Owner Name</label>
+            <input type="text" id="signup-name" required placeholder="আপনার নাম" class="w-full p-2.5 border rounded-lg text-xs">
           </div>
           <div>
-            <label class="text-xs font-semibold text-gray-600">Email Address</label>
-            <input type="email" id="signup-email" required placeholder="name@company.com" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-xs font-semibold text-slate-600">Email Address</label>
+            <input type="email" id="signup-email" required placeholder="name@company.com" class="w-full p-2.5 border rounded-lg text-xs">
           </div>
           <div>
-            <label class="text-xs font-semibold text-gray-600">Password</label>
-            <input type="password" id="signup-pass" required placeholder="••••••••" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-xs font-semibold text-slate-600">Password</label>
+            <input type="password" id="signup-pass" required placeholder="••••••••" class="w-full p-2.5 border rounded-lg text-xs">
           </div>
-          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition shadow">
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-xs">
             Sign Up & Create Account
           </button>
         </form>
 
-        <p class="text-xs text-center text-gray-600 mt-4">
+        <p class="text-xs text-center text-slate-600 mt-4">
           আগে থেকেই অ্যাকাউন্ট আছে?
           <button onclick="toggleAuth('login')" class="text-indigo-600 font-bold hover:underline">Log In</button>
         </p>
@@ -49,24 +373,24 @@
 
       <!-- LOGIN FORM -->
       <div id="login-box" class="hidden">
-        <h2 class="text-2xl font-bold text-gray-800 mb-1">POS Account Login</h2>
-        <p class="text-xs text-gray-500 mb-4">আপনার অ্যাকাউন্টে লগইন করুন</p>
+        <h2 class="text-2xl font-bold text-slate-800 mb-1">POS Account Login</h2>
+        <p class="text-xs text-slate-500 mb-4">আপনার অ্যাকাউন্টে লগইন করুন</p>
 
         <form onsubmit="handleLogin(event)" class="space-y-3">
           <div>
-            <label class="text-xs font-semibold text-gray-600">Email Address</label>
-            <input type="email" id="login-email" required placeholder="name@company.com" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-xs font-semibold text-slate-600">Email Address</label>
+            <input type="email" id="login-email" required placeholder="name@company.com" class="w-full p-2.5 border rounded-lg text-xs">
           </div>
           <div>
-            <label class="text-xs font-semibold text-gray-600">Password</label>
-            <input type="password" id="login-pass" required placeholder="••••••••" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-xs font-semibold text-slate-600">Password</label>
+            <input type="password" id="login-pass" required placeholder="••••••••" class="w-full p-2.5 border rounded-lg text-xs">
           </div>
-          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg transition shadow">
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-xs">
             Log In
           </button>
         </form>
 
-        <p class="text-xs text-center text-gray-600 mt-4">
+        <p class="text-xs text-center text-slate-600 mt-4">
           নতুন অ্যাকাউন্ট খুলতে চান?
           <button onclick="toggleAuth('signup')" class="text-indigo-600 font-bold hover:underline">Sign Up</button>
         </p>
@@ -75,120 +399,8 @@
     </div>
   </div>
 
-  <!-- Header -->
-  <header class="bg-indigo-600 text-white p-4 shadow-lg sticky top-0 z-40 flex justify-between items-center">
-    <div>
-      <h1 class="text-lg font-bold" id="shop-title-display">Easy POS System</h1>
-      <span id="tenant-badge" class="bg-indigo-800 text-[10px] px-2 py-0.5 rounded font-mono">No Active Session</span>
-    </div>
-    <button onclick="logout()" class="text-xs bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded-lg text-white font-medium shadow">
-      Logout
-    </button>
-  </header>
-
-  <!-- Main Container -->
-  <main class="max-w-4xl mx-auto p-4">
-
-    <!-- 1. DASHBOARD TAB -->
-    <section id="tab-dashboard" class="tab-content space-y-4">
-      <h2 class="text-xl font-bold text-gray-800">Dashboard</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-blue-500">
-          <p class="text-xs text-gray-500 font-semibold uppercase">Total Invoices</p>
-          <h3 id="dash-invoices" class="text-2xl font-bold text-gray-800 mt-1">0</h3>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-green-500">
-          <p class="text-xs text-gray-500 font-semibold uppercase">Total Receipts</p>
-          <h3 id="dash-receipts" class="text-2xl font-bold text-gray-800 mt-1">৳ 0</h3>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-red-500">
-          <p class="text-xs text-gray-500 font-semibold uppercase">Total Expense</p>
-          <h3 id="dash-expense" class="text-2xl font-bold text-gray-800 mt-1">৳ 0</h3>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow border-l-4 border-yellow-500">
-          <p class="text-xs text-gray-500 font-semibold uppercase">Total Stock Items</p>
-          <h3 id="dash-stock" class="text-2xl font-bold text-gray-800 mt-1">0</h3>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. SALES TAB -->
-    <section id="tab-sales" class="tab-content hidden space-y-4">
-      <h2 class="text-xl font-bold text-gray-800">New Sale / Invoice</h2>
-      <div class="bg-white p-4 rounded-xl shadow space-y-3">
-        <input type="text" id="sale-customer" placeholder="Customer Name & Phone" class="w-full p-2 border rounded">
-        <input type="text" id="sale-item" placeholder="Item Name" class="w-full p-2 border rounded">
-        <div class="grid grid-cols-2 gap-2">
-          <input type="number" id="sale-qty" placeholder="Qty" class="p-2 border rounded" oninput="calcSaleTotal()">
-          <input type="number" id="sale-price" placeholder="Unit Price" class="p-2 border rounded" oninput="calcSaleTotal()">
-        </div>
-        <div class="flex justify-between items-center text-lg font-bold">
-          <span>Total:</span>
-          <span id="sale-total">৳ 0</span>
-        </div>
-        <button onclick="processSale()" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">
-          Generate PDF & Share WhatsApp
-        </button>
-      </div>
-    </section>
-
-    <!-- 3. PURCHASE TAB -->
-    <section id="tab-purchase" class="tab-content hidden space-y-4">
-      <h2 class="text-xl font-bold text-gray-800">Purchase Entry</h2>
-      <div class="bg-white p-4 rounded-xl shadow space-y-3">
-        <input type="text" id="pur-supplier" placeholder="Supplier Name" class="w-full p-2 border rounded">
-        <input type="text" id="pur-item" placeholder="Item Name" class="w-full p-2 border rounded">
-        <div class="grid grid-cols-2 gap-2">
-          <input type="number" id="pur-qty" placeholder="Qty" class="p-2 border rounded">
-          <input type="number" id="pur-cost" placeholder="Unit Cost Price" class="p-2 border rounded">
-        </div>
-        <button onclick="addPurchase()" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700">
-          Save Purchase
-        </button>
-      </div>
-    </section>
-
-    <!-- 4. STOCK TAB -->
-    <section id="tab-stock" class="tab-content hidden space-y-4">
-      <h2 class="text-xl font-bold text-gray-800">Stock Inventory</h2>
-      <div class="bg-white rounded-xl shadow overflow-hidden">
-        <table class="w-full text-left text-sm">
-          <thead class="bg-gray-100 border-b">
-            <tr>
-              <th class="p-3">Item Name</th>
-              <th class="p-3">In Stock</th>
-              <th class="p-3">Price</th>
-            </tr>
-          </thead>
-          <tbody id="stock-table-body">
-            <tr>
-              <td colspan="3" class="p-3 text-center text-gray-500">No stock data available</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 5. ACCOUNTS TAB -->
-    <section id="tab-accounts" class="tab-content hidden space-y-4">
-      <h2 class="text-xl font-bold text-gray-800">Accounts & Ledger</h2>
-      <div class="bg-white p-4 rounded-xl shadow space-y-3">
-        <select id="acc-type" class="w-full p-2 border rounded">
-          <option value="Receipt">Receipt (জমা)</option>
-          <option value="Expense">Expense (খরচ)</option>
-        </select>
-        <input type="text" id="acc-desc" placeholder="Description / Particulars" class="w-full p-2 border rounded">
-        <input type="number" id="acc-amount" placeholder="Amount (৳)" class="w-full p-2 border rounded">
-        <button onclick="addAccountEntry()" class="w-full bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700">
-          Record Entry
-        </button>
-      </div>
-    </section>
-
-  </main>
-
   <!-- Bottom Navigation Bar -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-2 text-xs text-gray-600">
+  <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-2 text-xs text-slate-600 z-40 hidden">
     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center text-indigo-600 font-bold">
       <span>📊</span>
       <span>Dashboard</span>
@@ -211,19 +423,58 @@
     </button>
   </nav>
 
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs mt-auto">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2">
+      <p>© Easy POS System. All rights reserved.</p>
+      <p class="font-semibold text-slate-300">Hotline: <a href="tel:01716247713" class="text-emerald-400">01716247713</a></p>
+    </div>
+  </footer>
+
+  <!-- MODULE SCRIPTS -->
+  <script src="/js/sales.js"></script>
+  <script src="/js/purchase.js"></script>
+  <script src="/js/stock.js"></script>
+  <script src="/js/accounts.js"></script>
+
   <script>
-    // AUTH LOGIC
     function checkSession() {
       const activeTenant = localStorage.getItem('pos_tenant_id');
-      const shopName = localStorage.getItem('pos_shop_name');
 
-      if (!activeTenant) {
-        document.getElementById('auth-modal').classList.remove('hidden');
-      } else {
-        document.getElementById('auth-modal').classList.add('hidden');
+      if (activeTenant) {
         document.getElementById('tenant-badge').innerText = `ID: ${activeTenant}`;
-        document.getElementById('shop-title-display').innerText = shopName || 'Easy POS System';
+        document.getElementById('auth-guest-btns').classList.add('hidden');
+        document.getElementById('auth-user-btns').classList.remove('hidden');
+        showDashboard();
+      } else {
+        document.getElementById('tenant-badge').innerText = 'Guest Mode';
+        document.getElementById('auth-guest-btns').classList.remove('hidden');
+        document.getElementById('auth-user-btns').classList.add('hidden');
+        showLanding();
       }
+    }
+
+    function showDashboard() {
+      document.getElementById('website-landing').classList.add('hidden');
+      document.getElementById('app-dashboard').classList.remove('hidden');
+      document.getElementById('bottom-nav').classList.remove('hidden');
+      renderStockTable();
+      updateAccountsDashboard();
+    }
+
+    function showLanding() {
+      document.getElementById('app-dashboard').classList.add('hidden');
+      document.getElementById('bottom-nav').classList.add('hidden');
+      document.getElementById('website-landing').classList.remove('hidden');
+    }
+
+    function openAuthModal(mode) {
+      document.getElementById('auth-modal').classList.remove('hidden');
+      toggleAuth(mode);
+    }
+
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.add('hidden');
     }
 
     function toggleAuth(view) {
@@ -243,21 +494,17 @@
       const email = document.getElementById('signup-email').value.trim().toLowerCase();
       const pass = document.getElementById('signup-pass').value;
 
-      // Auto Generate Tenant ID
       const tenantId = 'shop_' + Math.random().toString(36).substring(2, 7);
-
       const newAccount = { tenantId, shop, name, email, pass };
 
-      // Save user to local registry (Replace this with API call to backend database later)
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
       users.push(newAccount);
       localStorage.setItem('pos_users', JSON.stringify(users));
 
-      // Auto login after signup
       localStorage.setItem('pos_tenant_id', tenantId);
       localStorage.setItem('pos_shop_name', shop);
 
-      alert(`Account Created Successfully!\nYour Client ID is: ${tenantId}`);
+      closeAuthModal();
       checkSession();
     }
 
@@ -272,6 +519,7 @@
       if (user) {
         localStorage.setItem('pos_tenant_id', user.tenantId);
         localStorage.setItem('pos_shop_name', user.shop);
+        closeAuthModal();
         checkSession();
       } else {
         alert("ইমেইল বা পাসওয়ার্ড ভুল হয়েছে!");
@@ -284,57 +532,19 @@
       checkSession();
     }
 
-    // UI TAB SWITCHING
     function switchTab(tabName) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.getElementById('tab-' + tabName).classList.remove('hidden');
 
-      document.querySelectorAll('nav button').forEach(btn => {
+      document.querySelectorAll('#bottom-nav button').forEach(btn => {
         btn.classList.remove('text-indigo-600', 'font-bold');
-        btn.classList.add('text-gray-600');
+        btn.classList.add('text-slate-600');
       });
       const activeNav = document.getElementById('nav-' + tabName);
-      activeNav.classList.remove('text-gray-600');
+      activeNav.classList.remove('text-slate-600');
       activeNav.classList.add('text-indigo-600', 'font-bold');
     }
 
-    function calcSaleTotal() {
-      const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
-      const price = parseFloat(document.getElementById('sale-price').value) || 0;
-      document.getElementById('sale-total').innerText = '৳ ' + (qty * price);
-    }
-
-    async function processSale() {
-      const customer = document.getElementById('sale-customer').value;
-      const item = document.getElementById('sale-item').value;
-      const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
-      const price = parseFloat(document.getElementById('sale-price').value) || 0;
-      const total = qty * price;
-
-      if(!item || total <= 0) {
-        alert("Please enter valid item, quantity and price");
-        return;
-      }
-
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(18);
-      doc.text("INVOICE", 105, 20, null, null, "center");
-      doc.setFontSize(12);
-      doc.text(`Shop: ${localStorage.getItem('pos_shop_name') || ''}`, 20, 30);
-      doc.text(`Customer: ${customer}`, 20, 40);
-      doc.text(`Item: ${item}`, 20, 50);
-      doc.text(`Quantity: ${qty}`, 20, 60);
-      doc.text(`Total Price: TK ${total}`, 20, 70);
-
-      const msg = encodeURIComponent(`Hello! Here is your invoice total: TK ${total}`);
-      window.open(`https://wa.me/?text=${msg}`, '_blank');
-    }
-
-    function addPurchase() { alert("Purchase saved!"); }
-    function addAccountEntry() { alert("Account entry recorded!"); }
-
-    // INITIALIZE ON LOAD
     window.onload = function() {
       checkSession();
     };
