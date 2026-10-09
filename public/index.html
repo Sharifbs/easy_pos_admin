@@ -10,10 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Hind Siliguri', sans-serif; }
-    .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); }
+    .glass { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between">
 
   <!-- TOP HEADER / NAVBAR -->
   <header class="sticky top-0 z-50 glass border-b border-slate-200 shadow-sm">
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <!-- Main Navigation Menu -->
+      <!-- Navigation Menu -->
       <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-slate-600">
         <a href="#home" onclick="showLanding()" class="hover:text-indigo-600 transition">Home</a>
         <a href="#services" onclick="showLanding()" class="hover:text-indigo-600 transition">Services</a>
@@ -42,17 +42,15 @@
           📞 01716247713
         </a>
 
-        <!-- Guest State Buttons -->
         <div id="auth-guest-btns" class="flex items-center space-x-2">
-          <button onclick="openAuthModal('login')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold px-3 py-2 rounded-lg transition">
+          <button onclick="openAuthModal('login')" class="bg-slate-200 text-slate-700 hover:bg-slate-300 text-xs font-bold px-3 py-2 rounded-lg transition">
             Login
           </button>
-          <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition shadow-md shadow-indigo-200">
+          <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition shadow">
             Sign Up
           </button>
         </div>
 
-        <!-- Logged In State Buttons -->
         <div id="auth-user-btns" class="hidden flex items-center space-x-2">
           <button onclick="showDashboard()" class="bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow">
             Open App
@@ -65,144 +63,64 @@
     </div>
   </header>
 
-  <!-- LANDING PAGE CONTENT -->
+  <!-- LANDING PAGE -->
   <div id="website-landing">
-    <!-- HERO SECTION -->
-    <section id="home" class="relative overflow-hidden py-12 md:py-20 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white">
-      <div class="max-w-6xl mx-auto px-4 text-center">
-        <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">
-          🚀 অল-ইন-ওয়ান পয়েন্ট অফ সেল সফটওয়্যার
-        </span>
-        <h1 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight">
-          সহজ ও আধুনিক পস সিস্টেম দিয়ে <br><span class="text-indigo-400">আপনার ব্যবসা পরিচালনা করুন</span>
-        </h1>
-        <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">
-          ইনভয়েস তৈরি, কাস্টমার রসিদ, ক্রয় হিসাব, স্টক ম্যানেজমেন্ট এবং অ্যাকাউন্টস এখন এক ক্লিকেই সামলান।
-        </p>
+    <section id="home" class="py-16 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white text-center px-4">
+      <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">
+        🚀 Premium All-in-One POS Solution
+      </span>
+      <h1 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight">
+        সহজ ও আধুনিক পস সিস্টেম দিয়ে <br><span class="text-indigo-400">আপনার ব্যবসা পরিচালনা করুন</span>
+      </h1>
+      <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">
+        ইনভয়েস তৈরি, অ্যাডভান্স জমা, অটো স্টক আপডেট, ক্রয় হিসাব এবং অ্যাকাউন্টস এখন এক অ্যাপেই।
+      </p>
 
-        <div class="mt-8 flex flex-wrap justify-center gap-4">
-          <button onclick="openAuthModal('signup')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm">
-            ফ্রি একাউন্ট খুলুন
-          </button>
-          <a href="tel:01716247713" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm flex items-center gap-2">
-            <span>📞 হটলাইন: 01716247713</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- HOME SERVICES SECTION -->
-    <section id="services" class="py-12 bg-white">
-      <div class="max-w-6xl mx-auto px-4">
-        <div class="text-center mb-10">
-          <h2 class="text-2xl font-bold text-slate-900">আমাদের সেবাসমূহ</h2>
-          <p class="text-xs text-slate-500 mt-1">আপনার ব্যবসার প্রতিটি ধাপকে সহজ করতে যা থাকছে</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
-            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-4">🧾</div>
-            <h3 class="font-bold text-lg mb-2">ইনভয়েস ও সেলস</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">সহজেই কাস্টমার ইনভয়েস তৈরি করুন এবং হোয়াটসঅ্যাপে পিডিএফ আকারে শেয়ার করুন।</p>
-          </div>
-
-          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
-            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4">📦</div>
-            <h3 class="font-bold text-lg mb-2">স্টক ট্র্যাকিং</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">পণ্য ক্রয় ও বিক্রয়ের সাথে সাথে স্বয়ংক্রিয় স্টক আপডেট এবং রিয়েল-টাইম কোয়ান্টিটি চেক।</p>
-          </div>
-
-          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
-            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-4">💰</div>
-            <h3 class="font-bold text-lg mb-2">হিসাব ও ক্যাশ খাতা</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">জমা ও খরচের আলাদা হিসাব রাখুন, ক্যাশ ফ্লো নিয়ন্ত্রণ করুন খুব সহজে।</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="py-12 bg-slate-100">
-      <div class="max-w-4xl mx-auto px-4">
-        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-md grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900 mb-2">আমাদের সাথে যোগাযোগ করুন</h2>
-            <p class="text-xs text-slate-500 mb-6">যে কোনো প্রয়োজন বা সহায়তার জন্য কল করুন অথবা মেসেজ দিন।</p>
-
-            <div class="space-y-4 text-sm font-medium">
-              <div class="flex items-center gap-3">
-                <span class="p-2 bg-emerald-100 text-emerald-600 rounded-lg">📞</span>
-                <div>
-                  <p class="text-[10px] text-slate-400">হটলাইন সাপোর্ট</p>
-                  <a href="tel:01716247713" class="font-bold text-slate-800 hover:text-emerald-600">01716247713</a>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-3">
-                <span class="p-2 bg-indigo-100 text-indigo-600 rounded-lg">💬</span>
-                <div>
-                  <p class="text-[10px] text-slate-400">WhatsApp সাপোর্টিং</p>
-                  <a href="https://wa.me/8801716247713" target="_blank" class="font-bold text-slate-800 hover:text-indigo-600">+880 1716 247713</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <form onsubmit="event.preventDefault(); alert('ধন্যবাদ! আমরা খুব শীঘ্রই আপনার সাথে যোগাযোগ করব।');" class="space-y-3 bg-slate-50 p-4 rounded-xl">
-            <input type="text" placeholder="আপনার নাম" required class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <input type="tel" placeholder="মোবাইল নম্বর" required class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <textarea placeholder="আপনার মেসেজ..." rows="3" class="w-full p-2.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-            <button type="submit" class="w-full bg-slate-900 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-slate-800 transition">
-              মেসেজ পাঠান
-            </button>
-          </form>
-        </div>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <button onclick="openAuthModal('signup')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm">
+          ফ্রি একাউন্ট খুলুন
+        </button>
+        <a href="tel:01716247713" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm flex items-center gap-2">
+          <span>📞 হটলাইন: 01716247713</span>
+        </a>
       </div>
     </section>
   </div>
 
   <!-- APP DASHBOARD CONTAINER -->
-  <main id="app-dashboard" class="max-w-2xl mx-auto p-4 hidden flex-grow w-full">
+  <main id="app-dashboard" class="max-w-3xl mx-auto p-4 hidden flex-grow w-full">
 
     <!-- 1. DASHBOARD TAB -->
     <section id="tab-dashboard" class="tab-content space-y-4">
-      <h2 class="text-xl font-bold text-slate-800">Dashboard</h2>
-      <div class="grid grid-cols-2 gap-4">
-        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
-          <p class="text-xs text-slate-500 font-semibold uppercase">Total Invoices</p>
-          <h3 id="dash-invoices" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+      <h2 class="text-xl font-bold text-slate-800">Business Overview</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-indigo-500">
+          <p class="text-xs text-slate-500 font-semibold uppercase">Total Sales</p>
+          <h3 id="dash-sales-total" class="text-xl font-bold text-slate-800 mt-1">৳ 0</h3>
         </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-emerald-500">
+        <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-emerald-500">
           <p class="text-xs text-slate-500 font-semibold uppercase">Total Receipts</p>
-          <h3 id="dash-receipts" class="text-2xl font-bold text-slate-800 mt-1">৳ 0</h3>
+          <h3 id="dash-receipts" class="text-xl font-bold text-slate-800 mt-1">৳ 0</h3>
         </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-rose-500">
+        <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-rose-500">
           <p class="text-xs text-slate-500 font-semibold uppercase">Total Expense</p>
-          <h3 id="dash-expense" class="text-2xl font-bold text-slate-800 mt-1">৳ 0</h3>
+          <h3 id="dash-expense" class="text-xl font-bold text-slate-800 mt-1">৳ 0</h3>
         </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-amber-500">
-          <p class="text-xs text-slate-500 font-semibold uppercase">Total Stock Items</p>
-          <h3 id="dash-stock" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+        <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-amber-500">
+          <p class="text-xs text-slate-500 font-semibold uppercase">Stock Items</p>
+          <h3 id="dash-stock-count" class="text-xl font-bold text-slate-800 mt-1">0</h3>
         </div>
       </div>
     </section>
 
-    <!-- 2. SALES TAB (MATCHED DESIGN WITH COD OPTION) -->
+    <!-- 2. SALES & INVOICE TAB -->
     <section id="tab-sales" class="tab-content hidden space-y-4">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-lg mx-auto">
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 max-w-lg mx-auto">
         <h2 class="text-center text-lg font-black text-slate-800 uppercase tracking-wide border-b pb-3 mb-4">
           EASY POS - SALES & INVOICE
         </h2>
 
         <div class="space-y-3 text-xs">
-          <div>
-            <label class="block text-slate-600 font-semibold mb-1">Select Client / Store</label>
-            <select id="sale-client" class="w-full p-2.5 border rounded-lg bg-white outline-none focus:border-indigo-500">
-              <option value="Rahim Store (CUST-001)">Rahim Store (CUST-001)</option>
-              <option value="Demo Shop (CUST-002)">Demo Shop (CUST-002)</option>
-            </select>
-          </div>
-
           <div>
             <label class="block text-slate-600 font-semibold mb-1">Customer Name</label>
             <input type="text" id="sale-customer" placeholder="Enter Customer Name" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
@@ -214,6 +132,11 @@
           </div>
 
           <div>
+            <label class="block text-slate-600 font-semibold mb-1 text-indigo-600">Customer Address</label>
+            <input type="text" id="sale-address" placeholder="House / Village, Thana, District" class="w-full p-2.5 border border-indigo-200 rounded-lg outline-none focus:border-indigo-500 bg-indigo-50/30">
+          </div>
+
+          <div>
             <label class="block text-slate-600 font-semibold mb-1">Product / Item Name</label>
             <input type="text" id="sale-item" placeholder="Item Name" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
           </div>
@@ -221,34 +144,34 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-slate-600 font-semibold mb-1">Quantity</label>
-              <input type="number" id="sale-qty" value="1" min="1" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+              <input type="number" id="sale-qty" value="1" min="1" onkeyup="calcSaleTotal()" onchange="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
             </div>
             <div>
               <label class="block text-slate-600 font-semibold mb-1">Unit Price (TK)</label>
-              <input type="number" id="sale-price" value="0" min="0" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+              <input type="number" id="sale-price" value="0" min="0" onkeyup="calcSaleTotal()" onchange="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-slate-600 font-semibold mb-1">Advance (TK)</label>
-              <input type="number" id="sale-advance" value="0" min="0" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+              <input type="number" id="sale-advance" value="0" min="0" onkeyup="calcSaleTotal()" onchange="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
             </div>
             <div>
               <label class="block text-slate-600 font-semibold mb-1">Received (TK)</label>
-              <input type="number" id="sale-received" value="0" min="0" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
+              <input type="number" id="sale-received" value="0" min="0" onkeyup="calcSaleTotal()" onchange="calcSaleTotal()" class="w-full p-2.5 border rounded-lg outline-none focus:border-indigo-500">
             </div>
           </div>
 
           <!-- SUMMARY CARD -->
           <div class="bg-slate-50 border border-dashed border-slate-300 p-3.5 rounded-xl space-y-1.5 mt-2">
-            <div class="flex justify-between text-slate-600 font-semibold">
+            <div class="flex justify-between text-slate-700 font-semibold">
               <span>Total Bill:</span>
-              <span id="sale-total-bill">0 TK</span>
+              <span id="sale-total-bill" class="font-bold">0 TK</span>
             </div>
-            <div class="flex justify-between text-slate-600 font-semibold">
+            <div class="flex justify-between text-slate-700 font-semibold">
               <span>Net Payable:</span>
-              <span id="sale-net-payable">0 TK</span>
+              <span id="sale-net-payable" class="font-bold">0 TK</span>
             </div>
             <div class="flex justify-between text-rose-600 font-bold text-sm pt-1 border-t border-slate-200">
               <span>Current Due:</span>
@@ -256,13 +179,13 @@
             </div>
           </div>
 
-          <!-- CASH ON DELIVERY OPTION -->
+          <!-- COD SWITCH -->
           <div class="flex items-center justify-between p-3 bg-amber-50 border border-amber-200 rounded-xl mt-3">
             <div class="flex items-center space-x-2">
               <input type="checkbox" id="sale-cod" onchange="calcSaleTotal()" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500">
               <label for="sale-cod" class="font-bold text-slate-800 text-xs">Cash on Delivery (COD)</label>
             </div>
-            <span id="cod-status-badge" class="text-[10px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded-full">NO</span>
+            <span id="cod-status-badge" class="text-[10px] bg-amber-200 text-amber-900 font-bold px-2.5 py-0.5 rounded-full">NO</span>
           </div>
 
           <button onclick="processSale()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow-md uppercase tracking-wider text-xs mt-3">
@@ -274,17 +197,35 @@
 
     <!-- 3. PURCHASE TAB -->
     <section id="tab-purchase" class="tab-content hidden space-y-4">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-lg mx-auto">
-        <h2 class="text-xl font-bold text-slate-800 mb-4">Purchase Entry</h2>
-        <div class="space-y-3">
-          <input type="text" id="pur-supplier" placeholder="Supplier Name" class="w-full p-2.5 border rounded-lg text-xs">
-          <input type="text" id="pur-item" placeholder="Item Name" class="w-full p-2.5 border rounded-lg text-xs">
-          <div class="grid grid-cols-2 gap-2">
-            <input type="number" id="pur-qty" placeholder="Qty" class="p-2.5 border rounded-lg text-xs">
-            <input type="number" id="pur-cost" placeholder="Unit Cost Price" class="p-2.5 border rounded-lg text-xs">
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 max-w-lg mx-auto">
+        <h2 class="text-xl font-bold text-slate-800 mb-4">Purchase Entry (Stock In)</h2>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Supplier / Client Name</label>
+            <input type="text" id="pur-supplier" placeholder="e.g. Milon Enterprise" class="w-full p-2.5 border rounded-lg">
           </div>
-          <button onclick="addPurchase()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow text-xs">
-            Save Purchase
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Product / Item Name</label>
+            <input type="text" id="pur-item" placeholder="e.g. Saree" class="w-full p-2.5 border rounded-lg">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-slate-600 font-semibold mb-1">Quantity</label>
+              <input type="number" id="pur-qty" value="1" onkeyup="calcPurchaseTotal()" onchange="calcPurchaseTotal()" class="p-2.5 border rounded-lg w-full">
+            </div>
+            <div>
+              <label class="block text-slate-600 font-semibold mb-1">Unit Cost (TK)</label>
+              <input type="number" id="pur-cost" value="0" onkeyup="calcPurchaseTotal()" onchange="calcPurchaseTotal()" class="p-2.5 border rounded-lg w-full">
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl font-bold text-slate-800">
+            <span>Total Cost:</span>
+            <span id="pur-total-cost">0 TK</span>
+          </div>
+
+          <button onclick="addPurchase()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow">
+            Save Purchase & Add to Stock
           </button>
         </div>
       </div>
@@ -292,20 +233,21 @@
 
     <!-- 4. STOCK TAB -->
     <section id="tab-stock" class="tab-content hidden space-y-4">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-2xl mx-auto">
-        <h2 class="text-xl font-bold text-slate-800 mb-4">Stock Inventory</h2>
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 max-w-2xl mx-auto">
+        <h2 class="text-xl font-bold text-slate-800 mb-4">Stock Inventory Tracker</h2>
         <div class="rounded-xl overflow-hidden border">
           <table class="w-full text-left text-xs">
             <thead class="bg-slate-100 border-b">
               <tr>
-                <th class="p-3">Item Name</th>
-                <th class="p-3">In Stock</th>
-                <th class="p-3">Price</th>
+                <th class="p-3">Product Name</th>
+                <th class="p-3">Available Stock</th>
+                <th class="p-3">Unit Price</th>
+                <th class="p-3">Status</th>
               </tr>
             </thead>
             <tbody id="stock-table-body">
               <tr>
-                <td colspan="3" class="p-3 text-center text-slate-500">No stock data available</td>
+                <td colspan="4" class="p-3 text-center text-slate-500">No stock data available</td>
               </tr>
             </tbody>
           </table>
@@ -315,16 +257,16 @@
 
     <!-- 5. ACCOUNTS TAB -->
     <section id="tab-accounts" class="tab-content hidden space-y-4">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 max-w-lg mx-auto">
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 max-w-lg mx-auto">
         <h2 class="text-xl font-bold text-slate-800 mb-4">Accounts & Ledger</h2>
-        <div class="space-y-3">
-          <select id="acc-type" class="w-full p-2.5 border rounded-lg text-xs bg-white">
+        <div class="space-y-3 text-xs">
+          <select id="acc-type" class="w-full p-2.5 border rounded-lg bg-white font-semibold">
             <option value="Receipt">Receipt (জমা)</option>
             <option value="Expense">Expense (খরচ)</option>
           </select>
-          <input type="text" id="acc-desc" placeholder="Description / Particulars" class="w-full p-2.5 border rounded-lg text-xs">
-          <input type="number" id="acc-amount" placeholder="Amount (৳)" class="w-full p-2.5 border rounded-lg text-xs">
-          <button onclick="addAccountEntry()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition shadow text-xs">
+          <input type="text" id="acc-desc" placeholder="Description / Particulars" class="w-full p-2.5 border rounded-lg">
+          <input type="number" id="acc-amount" placeholder="Amount (৳)" class="w-full p-2.5 border rounded-lg">
+          <button onclick="addAccountEntry()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition shadow">
             Record Entry
           </button>
         </div>
@@ -338,88 +280,52 @@
     <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
       <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
 
-      <!-- SIGNUP FORM -->
+      <!-- SIGNUP -->
       <div id="signup-box">
-        <h2 class="text-2xl font-bold text-slate-800 mb-1">Create New POS Account</h2>
-        <p class="text-xs text-slate-500 mb-4">আপনার ব্যবসার জন্য নতুন অ্যাকাউন্ট তৈরি করুন</p>
-
-        <form onsubmit="handleSignup(event)" class="space-y-3">
-          <div>
-            <label class="text-xs font-semibold text-slate-600">Business / Shop Name</label>
-            <input type="text" id="signup-shop" required placeholder="e.g. Acme Enterprise" class="w-full p-2.5 border rounded-lg text-xs">
-          </div>
-          <div>
-            <label class="text-xs font-semibold text-slate-600">Owner Name</label>
-            <input type="text" id="signup-name" required placeholder="আপনার নাম" class="w-full p-2.5 border rounded-lg text-xs">
-          </div>
-          <div>
-            <label class="text-xs font-semibold text-slate-600">Email Address</label>
-            <input type="email" id="signup-email" required placeholder="name@company.com" class="w-full p-2.5 border rounded-lg text-xs">
-          </div>
-          <div>
-            <label class="text-xs font-semibold text-slate-600">Password</label>
-            <input type="password" id="signup-pass" required placeholder="••••••••" class="w-full p-2.5 border rounded-lg text-xs">
-          </div>
-          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-xs">
-            Sign Up & Create Account
-          </button>
+        <h2 class="text-2xl font-bold text-slate-800 mb-1">Create POS Account</h2>
+        <form onsubmit="handleSignup(event)" class="space-y-3 mt-4 text-xs">
+          <input type="text" id="signup-shop" required placeholder="Business / Shop Name" class="w-full p-2.5 border rounded-lg">
+          <input type="text" id="signup-name" required placeholder="Owner Name" class="w-full p-2.5 border rounded-lg">
+          <input type="email" id="signup-email" required placeholder="Email Address" class="w-full p-2.5 border rounded-lg">
+          <input type="password" id="signup-pass" required placeholder="Password" class="w-full p-2.5 border rounded-lg">
+          <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-lg">Sign Up</button>
         </form>
-
         <p class="text-xs text-center text-slate-600 mt-4">
-          আগে থেকেই অ্যাকাউন্ট আছে?
-          <button onclick="toggleAuth('login')" class="text-indigo-600 font-bold hover:underline">Log In</button>
+          আগে থেকেই অ্যাকাউন্ট আছে? <button onclick="toggleAuth('login')" class="text-indigo-600 font-bold">Log In</button>
         </p>
       </div>
 
-      <!-- LOGIN FORM -->
+      <!-- LOGIN -->
       <div id="login-box" class="hidden">
-        <h2 class="text-2xl font-bold text-slate-800 mb-1">POS Account Login</h2>
-        <p class="text-xs text-slate-500 mb-4">আপনার অ্যাকাউন্টে লগইন করুন</p>
-
-        <form onsubmit="handleLogin(event)" class="space-y-3">
-          <div>
-            <label class="text-xs font-semibold text-slate-600">Email Address</label>
-            <input type="email" id="login-email" required placeholder="name@company.com" class="w-full p-2.5 border rounded-lg text-xs">
-          </div>
-          <div>
-            <label class="text-xs font-semibold text-slate-600">Password</label>
-            <input type="password" id="login-pass" required placeholder="••••••••" class="w-full p-2.5 border rounded-lg text-xs">
-          </div>
-          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-xs">
-            Log In
-          </button>
+        <h2 class="text-2xl font-bold text-slate-800 mb-1">POS Login</h2>
+        <form onsubmit="handleLogin(event)" class="space-y-3 mt-4 text-xs">
+          <input type="email" id="login-email" required placeholder="Email Address" class="w-full p-2.5 border rounded-lg">
+          <input type="password" id="login-pass" required placeholder="Password" class="w-full p-2.5 border rounded-lg">
+          <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-lg">Log In</button>
         </form>
-
         <p class="text-xs text-center text-slate-600 mt-4">
-          নতুন অ্যাকাউন্ট খুলতে চান?
-          <button onclick="toggleAuth('signup')" class="text-indigo-600 font-bold hover:underline">Sign Up</button>
+          নতুন অ্যাকাউন্ট খুলবেন? <button onclick="toggleAuth('signup')" class="text-indigo-600 font-bold">Sign Up</button>
         </p>
       </div>
-
     </div>
   </div>
 
   <!-- Bottom Navigation Bar -->
   <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-2 text-xs text-slate-600 z-40 hidden">
     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center text-indigo-600 font-bold">
-      <span>📊</span>
-      <span>Dashboard</span>
+      <span>📊</span><span>Dashboard</span>
     </button>
     <button onclick="switchTab('sales')" id="nav-sales" class="flex flex-col items-center">
-      <span>🧾</span>
-      <span>Sales</span>
+      <span>🧾</span><span>Sales</span>
     </button>
     <button onclick="switchTab('purchase')" id="nav-purchase" class="flex flex-col items-center">
-      <span>🛒</span>
-      <span>Purchase</span>
+      <span>🛒</span><span>Purchase</span>
     </button>
     <button onclick="switchTab('stock')" id="nav-stock" class="flex flex-col items-center">
-      <span>📦</span>
-      <span>Stock</span>
+      <span>📦</span><span>Stock</span>
     </button>
     <button onclick="switchTab('accounts')" id="nav-accounts" class="flex flex-col items-center">
-      <span>💰</span>
-      <span>Accounts</span>
+      <span>💰</span><span>Accounts</span>
     </button>
   </nav>
 
@@ -431,16 +337,174 @@
     </div>
   </footer>
 
-  <!-- MODULE SCRIPTS -->
-  <script src="/js/sales.js"></script>
-  <script src="/js/purchase.js"></script>
-  <script src="/js/stock.js"></script>
-  <script src="/js/accounts.js"></script>
-
+  <!-- SCRIPT LOGIC -->
   <script>
+    // 1. AUTO SALES CALCULATION
+    function calcSaleTotal() {
+      const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
+      const price = parseFloat(document.getElementById('sale-price').value) || 0;
+      const advance = parseFloat(document.getElementById('sale-advance').value) || 0;
+      const received = parseFloat(document.getElementById('sale-received').value) || 0;
+
+      const totalBill = qty * price;
+      const netPayable = Math.max(0, totalBill - advance);
+      const currentDue = Math.max(0, netPayable - received);
+
+      document.getElementById('sale-total-bill').innerText = totalBill + ' TK';
+      document.getElementById('sale-net-payable').innerText = netPayable + ' TK';
+      document.getElementById('sale-current-due').innerText = currentDue + ' TK';
+
+      const isCod = document.getElementById('sale-cod').checked;
+      document.getElementById('cod-status-badge').innerText = isCod ? 'YES (COD)' : 'NO';
+    }
+
+    // 2. PROCESS SALE & AUTO DEDUCT STOCK
+    function processSale() {
+      const customer = document.getElementById('sale-customer').value;
+      const phone = document.getElementById('sale-phone').value;
+      const address = document.getElementById('sale-address').value;
+      const item = document.getElementById('sale-item').value;
+      const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
+      const price = parseFloat(document.getElementById('sale-price').value) || 0;
+      const advance = parseFloat(document.getElementById('sale-advance').value) || 0;
+      const received = parseFloat(document.getElementById('sale-received').value) || 0;
+      const isCod = document.getElementById('sale-cod').checked;
+
+      const totalBill = qty * price;
+      const netPayable = Math.max(0, totalBill - advance);
+      const currentDue = Math.max(0, netPayable - received);
+
+      if(!item || totalBill <= 0) {
+        alert("Please enter a valid item, quantity, and price.");
+        return;
+      }
+
+      // Check and Deduct Stock
+      let stock = JSON.parse(localStorage.getItem('pos_stock') || '[]');
+      const stockItem = stock.find(s => s.name.toLowerCase() === item.toLowerCase());
+
+      if (stockItem) {
+        if (stockItem.qty < qty) {
+          alert(`Warning: In-stock quantity for ${item} is only ${stockItem.qty}. Selling anyway.`);
+        }
+        stockItem.qty = Math.max(0, stockItem.qty - qty);
+        localStorage.setItem('pos_stock', JSON.stringify(stock));
+        renderStockTable();
+      }
+
+      // Save Sale Summary to Accounts
+      let salesHistory = JSON.parse(localStorage.getItem('pos_sales_history') || '[]');
+      salesHistory.push({ customer, item, qty, totalBill, date: new Date().toLocaleDateString() });
+      localStorage.setItem('pos_sales_history', JSON.stringify(salesHistory));
+
+      // WhatsApp Invoice Message
+      const shopName = localStorage.getItem('pos_shop_name') || 'Easy POS';
+      const msg = encodeURIComponent(
+        `*INVOICE FROM ${shopName.toUpperCase()}*\n\nCustomer: ${customer}\nPhone: ${phone}\nAddress: ${address}\nItem: ${item}\nQty: ${qty}\nTotal Bill: ${totalBill} TK\nAdvance: ${advance} TK\nNet Payable: ${netPayable} TK\nReceived: ${received} TK\nCurrent Due: ${currentDue} TK\nPayment: ${isCod ? 'Cash on Delivery (COD)' : 'Paid'}`
+      );
+
+      window.open(`https://wa.me/${phone ? '88' + phone : ''}?text=${msg}`, '_blank');
+      updateDashboardStats();
+    }
+
+    // 3. PURCHASE & AUTO ADD STOCK
+    function calcPurchaseTotal() {
+      const qty = parseFloat(document.getElementById('pur-qty').value) || 0;
+      const cost = parseFloat(document.getElementById('pur-cost').value) || 0;
+      document.getElementById('pur-total-cost').innerText = (qty * cost) + ' TK';
+    }
+
+    function addPurchase() {
+      const supplier = document.getElementById('pur-supplier').value.trim();
+      const item = document.getElementById('pur-item').value.trim();
+      const qty = parseFloat(document.getElementById('pur-qty').value) || 0;
+      const cost = parseFloat(document.getElementById('pur-cost').value) || 0;
+
+      if (!supplier || !item || qty <= 0) {
+        alert("Supplier Name, Item Name and Quantity enter করুন।");
+        return;
+      }
+
+      let stock = JSON.parse(localStorage.getItem('pos_stock') || '[]');
+      const existing = stock.find(s => s.name.toLowerCase() === item.toLowerCase());
+
+      if (existing) {
+        existing.qty += qty;
+        existing.price = cost;
+      } else {
+        stock.push({ name: item, qty, price: cost });
+      }
+
+      localStorage.setItem('pos_stock', JSON.stringify(stock));
+      alert(`Success! ${qty} units of ${item} added to Stock.`);
+
+      document.getElementById('pur-supplier').value = '';
+      document.getElementById('pur-item').value = '';
+      document.getElementById('pur-qty').value = '1';
+      document.getElementById('pur-cost').value = '0';
+      calcPurchaseTotal();
+      renderStockTable();
+    }
+
+    // 4. RENDER STOCK TABLE
+    function renderStockTable() {
+      const tbody = document.getElementById('stock-table-body');
+      let stock = JSON.parse(localStorage.getItem('pos_stock') || '[]');
+
+      if(stock.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-500">No stock items found</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = stock.map(s => `
+        <tr class="border-b hover:bg-slate-50">
+          <td class="p-3 font-semibold text-slate-800">${s.name}</td>
+          <td class="p-3 font-bold ${s.qty <= 5 ? 'text-red-500' : 'text-emerald-600'}">${s.qty}</td>
+          <td class="p-3">৳ ${s.price}</td>
+          <td class="p-3"><span class="text-[10px] px-2 py-0.5 rounded ${s.qty > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${s.qty > 0 ? 'In Stock' : 'Out of Stock'}</span></td>
+        </tr>
+      `).join('');
+
+      document.getElementById('dash-stock-count').innerText = stock.length;
+    }
+
+    // 5. ACCOUNTS & DASHBOARD
+    function addAccountEntry() {
+      const type = document.getElementById('acc-type').value;
+      const desc = document.getElementById('acc-desc').value.trim();
+      const amount = parseFloat(document.getElementById('acc-amount').value) || 0;
+
+      if (!desc || amount <= 0) {
+        alert("Valid description and amount দিন।");
+        return;
+      }
+
+      let ledger = JSON.parse(localStorage.getItem('pos_ledger') || '[]');
+      ledger.push({ type, desc, amount, date: new Date().toLocaleDateString() });
+      localStorage.setItem('pos_ledger', JSON.stringify(ledger));
+
+      alert(`${type} Entry Saved!`);
+      document.getElementById('acc-desc').value = '';
+      document.getElementById('acc-amount').value = '';
+      updateDashboardStats();
+    }
+
+    function updateDashboardStats() {
+      let salesHistory = JSON.parse(localStorage.getItem('pos_sales_history') || '[]');
+      let ledger = JSON.parse(localStorage.getItem('pos_ledger') || '[]');
+
+      let totalSalesSum = salesHistory.reduce((acc, curr) => acc + curr.totalBill, 0);
+      let totalReceiptsSum = ledger.filter(l => l.type === 'Receipt').reduce((acc, curr) => acc + curr.amount, 0);
+      let totalExpenseSum = ledger.filter(l => l.type === 'Expense').reduce((acc, curr) => acc + curr.amount, 0);
+
+      document.getElementById('dash-sales-total').innerText = '৳ ' + totalSalesSum;
+      document.getElementById('dash-receipts').innerText = '৳ ' + totalReceiptsSum;
+      document.getElementById('dash-expense').innerText = '৳ ' + totalExpenseSum;
+    }
+
+    // SESSION & VIEW NAVIGATION
     function checkSession() {
       const activeTenant = localStorage.getItem('pos_tenant_id');
-
       if (activeTenant) {
         document.getElementById('tenant-badge').innerText = `ID: ${activeTenant}`;
         document.getElementById('auth-guest-btns').classList.add('hidden');
@@ -459,7 +523,7 @@
       document.getElementById('app-dashboard').classList.remove('hidden');
       document.getElementById('bottom-nav').classList.remove('hidden');
       renderStockTable();
-      updateAccountsDashboard();
+      updateDashboardStats();
     }
 
     function showLanding() {
@@ -495,10 +559,8 @@
       const pass = document.getElementById('signup-pass').value;
 
       const tenantId = 'shop_' + Math.random().toString(36).substring(2, 7);
-      const newAccount = { tenantId, shop, name, email, pass };
-
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
-      users.push(newAccount);
+      users.push({ tenantId, shop, name, email, pass });
       localStorage.setItem('pos_users', JSON.stringify(users));
 
       localStorage.setItem('pos_tenant_id', tenantId);
@@ -547,6 +609,7 @@
 
     window.onload = function() {
       checkSession();
+      calcSaleTotal();
     };
 
     if ('serviceWorker' in navigator) {
