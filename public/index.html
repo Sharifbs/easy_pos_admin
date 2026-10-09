@@ -8,7 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Hind Siliguri', sans-serif; }
@@ -53,13 +52,13 @@
     </div>
   </header>
 
-  <!-- LANDING PAGE WITH HOME, SERVICES & CONTACT SECTIONS -->
+  <!-- LANDING PAGE -->
   <div id="website-landing">
     <!-- HOME SECTION -->
     <section id="home" class="py-16 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white text-center px-4">
       <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">🚀 Premium POS Software</span>
       <h1 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight">সহজ ও আধুনিক পস সিস্টেম দিয়ে <br><span class="text-indigo-400">আপনার ব্যবসা পরিচালনা করুন</span></h1>
-      <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">স্ট্যান্ডার্ড প্রফেশনাল ইনভয়েস, কাস্টম লোগো, কোম্পানি হেডার, স্টক ট্র্যাকিং এবং অ্যাকাউন্টস সিস্টেম।</p>
+      <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">স্ট্যান্ডার্ড প্রফেশনাল ইনভয়েস, কাস্টম লোগো, ক্যাশ কালেকশন, ক্যাশ অন ডেলিভারি (COD) ট্র্যাকিং এবং অ্যাকাউন্টস সিস্টেম।</p>
 
       <div class="mt-8 flex flex-wrap justify-center gap-4">
         <button onclick="openAuthModal('signup')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm">ফ্রি একাউন্ট খুলুন</button>
@@ -79,7 +78,7 @@
           <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
             <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-4">🧾</div>
             <h3 class="font-bold text-lg mb-2">স্ট্যান্ডার্ড ইনভয়েস ও সেলস</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">পিডিএফ ফরম্যাটে প্রফেশনাল মেমো জেনারেট করুন এবং অটো বারকোড ও লোগো সহ কাস্টমারকে হোয়াটসঅ্যাপে পাঠান।</p>
+            <p class="text-xs text-slate-600 leading-relaxed">পিডিএফ ফরম্যাটে প্রফেশনাল মেমো জেনারেট করুন এবং অটো লোগো ও COD সহ কাস্টমারকে হোয়াটসঅ্যাপে পাঠান।</p>
           </div>
 
           <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
@@ -91,7 +90,7 @@
           <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
             <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-4">💰</div>
             <h3 class="font-bold text-lg mb-2">ইনকাম ও এক্সপেনডিচার লেজার</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">দৈনিক খরচ ও জমার হিসাব রাখুন এবং রিয়েল-টাইমে ব্যবসার নেট প্রফিট/লস স্টেটমেন্ট দেখুন।</p>
+            <p class="text-xs text-slate-600 leading-relaxed">দৈনিক খরচ ও ক্যাশ কালেকশনের হিসাব রাখুন এবং রিয়েল-টাইমে ব্যবসার নেট প্রফিট/লস স্টেটমেন্ট দেখুন।</p>
           </div>
         </div>
       </div>
@@ -237,14 +236,14 @@
               <input type="number" id="sale-advance" value="0" min="0" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg">
             </div>
             <div>
-              <label class="block text-slate-600 font-semibold mb-1">Received (TK)</label>
+              <label class="block text-slate-600 font-semibold mb-1">Received / Payment (TK)</label>
               <input type="number" id="sale-received" value="0" min="0" oninput="calcSaleTotal()" class="w-full p-2.5 border rounded-lg">
             </div>
           </div>
 
           <div class="bg-slate-50 border border-dashed border-slate-300 p-3.5 rounded-xl space-y-1.5 mt-2">
             <div class="flex justify-between text-slate-700 font-semibold"><span>Total Bill:</span><span id="sale-total-bill">0 TK</span></div>
-            <div class="flex justify-between text-slate-700 font-semibold"><span>Net Payable:</span><span id="sale-net-payable">0 TK</span></div>
+            <div class="flex justify-between text-slate-700 font-semibold"><span>Cash Payment:</span><span id="sale-net-payable">0 TK</span></div>
             <div class="flex justify-between text-rose-600 font-bold text-sm pt-1 border-t border-slate-200"><span>Current Due:</span><span id="sale-current-due">0 TK</span></div>
           </div>
 
@@ -263,9 +262,12 @@
         </div>
       </div>
 
-      <!-- INVOICE LIST -->
+      <!-- INVOICE LIST WITH CASH COLLECTION & RESEND PDF -->
       <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
-        <h3 class="font-bold text-slate-800 text-sm mb-3">Invoice Summary & History</h3>
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-bold text-slate-800 text-sm">Invoice Summary & History</h3>
+          <button onclick="openCashCollectModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow">💵 Cash Collection</button>
+        </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead class="bg-slate-100 border-b">
@@ -424,6 +426,29 @@
 
   </main>
 
+  <!-- CASH COLLECTION MODAL -->
+  <div id="cash-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+      <button onclick="closeCashModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+      <h2 class="text-xl font-bold text-slate-800 mb-3">💵 Receive Due Cash Collection</h2>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-600 font-semibold mb-1">Select Pending Invoice</label>
+          <select id="collect-inv-select" onchange="loadInvoiceDueAmount()" class="w-full p-2.5 border rounded-lg bg-white"></select>
+        </div>
+        <div>
+          <label class="block text-slate-600 font-semibold mb-1">Current Outstanding Due</label>
+          <input type="text" id="collect-current-due" readonly class="w-full p-2.5 bg-slate-100 border rounded-lg font-bold text-rose-600">
+        </div>
+        <div>
+          <label class="block text-slate-600 font-semibold mb-1">Collected Amount (TK)</label>
+          <input type="number" id="collect-amount" placeholder="Enter Collected Cash" class="w-full p-2.5 border rounded-lg">
+        </div>
+        <button onclick="saveCashCollection()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow">Save Cash Collection</button>
+      </div>
+    </div>
+  </div>
+
   <!-- AUTH MODAL -->
   <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
@@ -489,22 +514,31 @@
       document.getElementById('set-company-cell').value = localStorage.getItem('pos_company_cell') || '';
     }
 
+    // COD & DUE CALCULATION LOGIC
     function calcSaleTotal() {
       const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
       const price = parseFloat(document.getElementById('sale-price').value) || 0;
       const advance = parseFloat(document.getElementById('sale-advance').value) || 0;
       const received = parseFloat(document.getElementById('sale-received').value) || 0;
+      const isCod = document.getElementById('sale-cod').checked;
 
       const totalBill = qty * price;
-      const netPayable = Math.max(0, totalBill - advance);
-      const currentDue = Math.max(0, netPayable - received);
+      let cashPayment = 0;
+      let currentDue = 0;
+
+      if (isCod) {
+        cashPayment = Math.max(0, totalBill - advance);
+        currentDue = 0; // COD Selected -> Cash Payment shown, No Due
+        document.getElementById('cod-status-badge').innerText = 'YES (COD)';
+      } else {
+        cashPayment = Math.max(0, advance + received);
+        currentDue = Math.max(0, totalBill - cashPayment);
+        document.getElementById('cod-status-badge').innerText = 'NO';
+      }
 
       document.getElementById('sale-total-bill').innerText = totalBill + ' TK';
-      document.getElementById('sale-net-payable').innerText = netPayable + ' TK';
+      document.getElementById('sale-net-payable').innerText = cashPayment + ' TK';
       document.getElementById('sale-current-due').innerText = currentDue + ' TK';
-
-      const isCod = document.getElementById('sale-cod').checked;
-      document.getElementById('cod-status-badge').innerText = isCod ? 'YES (COD)' : 'NO';
     }
 
     function numberToWords(num) {
@@ -526,6 +560,83 @@
       return inWords(num).trim() + ' Taka Only';
     }
 
+    function generatePDF(invData) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+
+      const companyName = localStorage.getItem('pos_company_name') || localStorage.getItem('pos_shop_name') || 'Easy POS Store';
+      const companyAddress = localStorage.getItem('pos_company_address') || 'Dhaka, Bangladesh';
+      const companyCell = localStorage.getItem('pos_company_cell') || '01716247713';
+      const logoData = localStorage.getItem('pos_company_logo');
+
+      doc.setFontSize(22);
+      doc.setFont("helvetica", "bold");
+      doc.text("Invoice", 14, 20);
+
+      doc.setFontSize(11);
+      doc.text(companyName, 14, 28);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.text(companyAddress, 14, 34);
+      doc.text(`Call : ${companyCell}`, 14, 39);
+
+      if (logoData) {
+        try { doc.addImage(logoData, 'JPEG', 150, 12, 45, 25); } catch(e) {}
+      }
+
+      doc.setLineWidth(0.5);
+      doc.line(14, 44, 196, 44);
+
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "bold");
+      doc.text(`Date        : ${invData.date}`, 14, 52);
+      doc.text(`Name      : ${invData.customer}`, 14, 58);
+      doc.text(`Address : ${invData.address}`, 14, 64);
+
+      doc.text(`Mobile : ${invData.phone}`, 85, 52);
+      doc.text(`Invoice No : ${invData.invNo}`, 145, 52);
+
+      doc.autoTable({
+        startY: 70,
+        head: [['SL', 'Product', 'Quantity', 'Price', 'Total Price']],
+        body: [
+          ['1', invData.item, invData.qty.toFixed(2), invData.price.toFixed(2), invData.totalBill.toFixed(2)]
+        ],
+        theme: 'grid',
+        headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold' },
+        styles: { fontSize: 9, cellPadding: 2.5 }
+      });
+
+      const finalY = doc.lastAutoTable.finalY || 90;
+
+      doc.setFont("helvetica", "bold");
+      doc.text(`In words :   ${numberToWords(invData.totalBill)}`, 14, finalY + 12);
+
+      doc.autoTable({
+        startY: finalY + 5,
+        margin: { left: 135 },
+        body: [
+          ['Grand Total', invData.totalBill.toFixed(2)],
+          ['Advance', invData.advance.toFixed(2)],
+          ['Payment / Cash', invData.netPayable.toFixed(2)],
+          ['Due', invData.currentDue.toFixed(2)]
+        ],
+        theme: 'grid',
+        styles: { fontSize: 9, fontStyle: 'bold', halign: 'right' }
+      });
+
+      const footerY = finalY + 45;
+      doc.line(14, footerY, 65, footerY);
+      doc.text("Signature", 30, footerY + 5);
+      doc.setFontSize(8);
+      doc.text(invData.date, 32, footerY + 9);
+
+      doc.setFontSize(10);
+      doc.text("Thank for staying with us !!", 105, footerY + 15, null, null, "center");
+
+      doc.save(`${invData.invNo}_${invData.customer}.pdf`);
+    }
+
     function processSale(actionType) {
       const invNo = document.getElementById('sale-inv-no').value;
       const date = document.getElementById('sale-date').value;
@@ -540,8 +651,16 @@
       const isCod = document.getElementById('sale-cod').checked;
 
       const totalBill = qty * price;
-      const netPayable = Math.max(0, totalBill - advance);
-      const currentDue = Math.max(0, netPayable - received);
+      let netPayable = 0;
+      let currentDue = 0;
+
+      if (isCod) {
+        netPayable = Math.max(0, totalBill - advance);
+        currentDue = 0;
+      } else {
+        netPayable = Math.max(0, advance + received);
+        currentDue = Math.max(0, totalBill - netPayable);
+      }
 
       if(!customer || !item || totalBill <= 0) {
         alert("Please enter Customer Name, Item Name, Quantity, and Price.");
@@ -556,98 +675,93 @@
       }
 
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
-      const invData = { invNo, date, customer, phone, address, item, qty, price, totalBill, netPayable, currentDue, isCod };
+      const invData = { invNo, date, customer, phone, address, item, qty, price, totalBill, advance, netPayable, currentDue, isCod };
       invoices.push(invData);
       localStorage.setItem('pos_invoices', JSON.stringify(invoices));
 
       if (actionType === 'pdf') {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('p', 'mm', 'a4');
-
-        const companyName = localStorage.getItem('pos_company_name') || localStorage.getItem('pos_shop_name') || 'Easy POS Store';
-        const companyAddress = localStorage.getItem('pos_company_address') || 'Dhaka, Bangladesh';
-        const companyCell = localStorage.getItem('pos_company_cell') || '01716247713';
-        const logoData = localStorage.getItem('pos_company_logo');
-
-        doc.setFontSize(22);
-        doc.setFont("helvetica", "bold");
-        doc.text("Invoice", 14, 20);
-
-        doc.setFontSize(11);
-        doc.text(companyName, 14, 28);
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(9);
-        doc.text(companyAddress, 14, 34);
-        doc.text(`Call : ${companyCell}`, 14, 39);
-
-        if (logoData) {
-          try {
-            doc.addImage(logoData, 'JPEG', 150, 12, 45, 25);
-          } catch(e) {}
-        }
-
-        doc.setLineWidth(0.5);
-        doc.line(14, 44, 196, 44);
-
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "bold");
-        doc.text(`Date        : ${date}`, 14, 52);
-        doc.text(`Name      : ${customer}`, 14, 58);
-        doc.text(`Address : ${address}`, 14, 64);
-
-        doc.text(`Mobile : ${phone}`, 85, 52);
-        doc.text(`Invoice No : ${invNo}`, 145, 52);
-
-        doc.autoTable({
-          startY: 70,
-          head: [['SL', 'Product', 'Quantity', 'Price', 'Total Price']],
-          body: [
-            ['1', item, qty.toFixed(2), price.toFixed(2), totalBill.toFixed(2)]
-          ],
-          theme: 'grid',
-          headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold' },
-          styles: { fontSize: 9, cellPadding: 2.5 }
-        });
-
-        const finalY = doc.lastAutoTable.finalY || 90;
-
-        doc.setFont("helvetica", "bold");
-        doc.text(`In words :   ${numberToWords(totalBill)}`, 14, finalY + 12);
-
-        doc.autoTable({
-          startY: finalY + 5,
-          margin: { left: 135 },
-          body: [
-            ['Grand Total', totalBill.toFixed(2)],
-            ['Discount / Advance', advance.toFixed(2)],
-            ['Payment', received.toFixed(2)],
-            ['Due', currentDue.toFixed(2)]
-          ],
-          theme: 'grid',
-          styles: { fontSize: 9, fontStyle: 'bold', halign: 'right' }
-        });
-
-        const footerY = finalY + 45;
-        doc.line(14, footerY, 65, footerY);
-        doc.text("Signature", 30, footerY + 5);
-        doc.setFontSize(8);
-        doc.text(date, 32, footerY + 9);
-
-        doc.setFontSize(10);
-        doc.text("Thank for staying with us !!", 105, footerY + 15, null, null, "center");
-
-        doc.save(`${invNo}_${customer}.pdf`);
+        generatePDF(invData);
       }
 
       if (actionType === 'wa') {
         const msg = encodeURIComponent(
-          `*INVOICE: ${invNo}*\nDate: ${date}\nCustomer: ${customer}\nPhone: ${phone}\nAddress: ${address}\nItem: ${item}\nQty: ${qty}\nTotal Bill: ${totalBill} TK\nNet Payable: ${netPayable} TK\nCurrent Due: ${currentDue} TK`
+          `*INVOICE: ${invNo}*\nDate: ${date}\nCustomer: ${customer}\nPhone: ${phone}\nAddress: ${address}\nItem: ${item}\nQty: ${qty}\nTotal Bill: ${totalBill} TK\nCash Payment: ${netPayable} TK\nCurrent Due: ${currentDue} TK\nPayment Mode: ${isCod ? 'Cash on Delivery (COD)' : 'Direct Paid'}`
         );
         window.open(`https://wa.me/${phone ? '88' + phone : ''}?text=${msg}`, '_blank');
       }
 
       initFormDates();
       renderAllTables();
+    }
+
+    // RESEND PDF DIRECTLY
+    function downloadInvoicePDF(invNo) {
+      let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
+      const inv = invoices.find(i => i.invNo === invNo);
+      if (inv) {
+        generatePDF(inv);
+      }
+    }
+
+    // CASH COLLECTION MODAL & LOGIC
+    function openCashCollectModal() {
+      let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
+      const pendingInvoices = invoices.filter(i => i.currentDue > 0);
+      const select = document.getElementById('collect-inv-select');
+
+      if (pendingInvoices.length === 0) {
+        alert("কোনো কাস্টমারের বকেয়া (Due) নেই!");
+        return;
+      }
+
+      select.innerHTML = pendingInvoices.map(i => `<option value="${i.invNo}">${i.invNo} - ${i.customer} (Due: ${i.currentDue} TK)</option>`).join('');
+      document.getElementById('cash-modal').classList.remove('hidden');
+      loadInvoiceDueAmount();
+    }
+
+    function closeCashModal() {
+      document.getElementById('cash-modal').classList.add('hidden');
+    }
+
+    function loadInvoiceDueAmount() {
+      const invNo = document.getElementById('collect-inv-select').value;
+      let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
+      const inv = invoices.find(i => i.invNo === invNo);
+      if (inv) {
+        document.getElementById('collect-current-due').value = inv.currentDue + ' TK';
+      }
+    }
+
+    function saveCashCollection() {
+      const invNo = document.getElementById('collect-inv-select').value;
+      const collectAmount = parseFloat(document.getElementById('collect-amount').value) || 0;
+
+      if (collectAmount <= 0) {
+        alert("ক্যাশ অ্যামাউন্ট প্রদান করুন।");
+        return;
+      }
+
+      let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
+      const inv = invoices.find(i => i.invNo === invNo);
+      if (inv) {
+        inv.currentDue = Math.max(0, inv.currentDue - collectAmount);
+        inv.netPayable += collectAmount;
+        localStorage.setItem('pos_invoices', JSON.stringify(invoices));
+
+        // Save into Accounts Ledger as Receipt
+        let ledger = JSON.parse(localStorage.getItem('pos_ledger') || '[]');
+        ledger.push({
+          date: new Date().toISOString().split('T')[0],
+          type: 'Receipt',
+          desc: `Cash Collection (${inv.customer} - ${inv.invNo})`,
+          amount: collectAmount
+        });
+        localStorage.setItem('pos_ledger', JSON.stringify(ledger));
+
+        alert(`৳ ${collectAmount} Cash Collected Successfully!`);
+        closeCashModal();
+        renderAllTables();
+      }
     }
 
     function saveCompanySettings(e) {
@@ -753,8 +867,9 @@
           <td class="p-2">${i.customer}</td>
           <td class="p-2 font-bold">${i.totalBill} TK</td>
           <td class="p-2 text-rose-600 font-bold">${i.currentDue} TK</td>
-          <td class="p-2 text-center">
-            <button onclick="resendInvoice('${i.invNo}')" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">📲 Resend</button>
+          <td class="p-2 text-center flex items-center justify-center gap-1">
+            <button onclick="downloadInvoicePDF('${i.invNo}')" class="bg-indigo-100 text-indigo-800 text-[10px] px-2 py-1 rounded font-bold">📄 PDF</button>
+            <button onclick="resendInvoice('${i.invNo}')" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">📲 WhatsApp</button>
           </td>
         </tr>
       `).join('');
