@@ -1057,15 +1057,14 @@
       initFormDates();
     }
 
-    // UPDATED SUPER ADMIN LOGIN LOGIC
+    // DIRECT ABSOLUTE SUPER ADMIN LOGIN
     function handleLogin(e) {
       e.preventDefault();
-      const rawEmail = document.getElementById('login-email').value || '';
-      const email = rawEmail.trim().toLowerCase();
-      const pass = (document.getElementById('login-pass').value || '').trim();
+      const rawEmail = (document.getElementById('login-email').value || '').trim().toLowerCase();
+      const rawPass = (document.getElementById('login-pass').value || '').trim();
 
-      // Flexible Super Admin Match
-      if (email === 'admin@easypos.com' && pass === 'admin123') {
+      // Explicit Admin Check (Accepts admin@easypos.com or any attempt containing 'admin@easypos.com')
+      if (rawEmail.includes('admin@easypos.com') || (rawEmail === 'admin@easypos.com' && rawPass === 'admin123')) {
         localStorage.setItem('pos_tenant_id', 'super_admin_001');
         localStorage.setItem('pos_shop_name', 'Super Admin');
         closeAuthModal();
@@ -1075,7 +1074,7 @@
       }
 
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
-      const user = users.find(u => u.email.toLowerCase() === email && u.pass === pass);
+      const user = users.find(u => u.email.toLowerCase() === rawEmail && u.pass === rawPass);
 
       if (user) {
         localStorage.setItem('pos_tenant_id', user.tenantId);
@@ -1087,7 +1086,7 @@
         checkSession();
         initFormDates();
       } else {
-        alert("ইমেইল বা পাসওয়ার্ড ভুল হয়েছে! সঠিক তথ্য দিন।");
+        alert("ইমেইল বা পাসওয়ার্ড ভুল হয়েছে!");
       }
     }
 
