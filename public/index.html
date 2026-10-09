@@ -423,7 +423,7 @@
       </div>
     </section>
 
-    <!-- 7. SUPER ADMIN PANEL TAB WITH EDIT & RESET PASSWORD -->
+    <!-- 7. SUPER ADMIN PANEL TAB -->
     <section id="tab-admin" class="tab-content hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
         <div class="flex justify-between items-center mb-4">
@@ -431,8 +431,11 @@
             <h2 class="text-xl font-bold text-slate-900">👑 Super Admin Panel</h2>
             <p class="text-xs text-slate-500">নিবন্ধিত সমস্ত সিস্টেম ইউজার, পাসওয়ার্ড রিসেট ও এডিট অপশন</p>
           </div>
-          <div class="bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs px-3 py-1.5 rounded-xl">
-            Total Registered Shops: <span id="admin-user-count" class="text-indigo-900 text-sm">0</span>
+          <div class="flex items-center space-x-2">
+            <button onclick="changeAdminPassword()" class="bg-amber-600 text-white font-bold text-xs px-3 py-1.5 rounded-xl hover:bg-amber-700 transition">🔑 Change Admin Password</button>
+            <div class="bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs px-3 py-1.5 rounded-xl">
+              Total Registered Shops: <span id="admin-user-count" class="text-indigo-900 text-sm">0</span>
+            </div>
           </div>
         </div>
 
@@ -637,6 +640,11 @@
     }
 
     function generatePDF(invData) {
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        alert("jsPDF library load hoini! Internet connection check করুন।");
+        return;
+      }
+
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('p', 'mm', 'a4');
 
@@ -672,34 +680,38 @@
       doc.text(`Mobile : ${invData.phone}`, 85, 52);
       doc.text(`Invoice No : ${invData.invNo}`, 145, 52);
 
-      doc.autoTable({
-        startY: 70,
-        head: [['SL', 'Product', 'Quantity', 'Price', 'Total Price']],
-        body: [
-          ['1', invData.item, invData.qty.toFixed(2), invData.price.toFixed(2), invData.totalBill.toFixed(2)]
-        ],
-        theme: 'grid',
-        headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold' },
-        styles: { fontSize: 9, cellPadding: 2.5 }
-      });
+      if (doc.autoTable) {
+        doc.autoTable({
+          startY: 70,
+          head: [['SL', 'Product', 'Quantity', 'Price', 'Total Price']],
+          body: [
+            ['1', invData.item, (invData.qty || 1).toFixed(2), (invData.price || 0).toFixed(2), (invData.totalBill || 0).toFixed(2)]
+          ],
+          theme: 'grid',
+          headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold' },
+          styles: { fontSize: 9, cellPadding: 2.5 }
+        });
+      }
 
-      const finalY = doc.lastAutoTable.finalY || 90;
+      const finalY = (doc.lastAutoTable && doc.lastAutoTable.finalY) ? doc.lastAutoTable.finalY : 90;
 
       doc.setFont("helvetica", "bold");
-      doc.text(`In words :   ${numberToWords(invData.totalBill)}`, 14, finalY + 12);
+      doc.text(`In words :   ${numberToWords(invData.totalBill || 0)}`, 14, finalY + 12);
 
-      doc.autoTable({
-        startY: finalY + 5,
-        margin: { left: 135 },
-        body: [
-          ['Grand Total', invData.totalBill.toFixed(2)],
-          ['Advance', invData.advance.toFixed(2)],
-          ['Payment / Cash', invData.netPayable.toFixed(2)],
-          ['Due', invData.currentDue.toFixed(2)]
-        ],
-        theme: 'grid',
-        styles: { fontSize: 9, fontStyle: 'bold', halign: 'right' }
-      });
+      if (doc.autoTable) {
+        doc.autoTable({
+          startY: finalY + 5,
+          margin: { left: 135 },
+          body: [
+            ['Grand Total', (invData.totalBill || 0).toFixed(2)],
+            ['Advance', (invData.advance || 0).toFixed(2)],
+            ['Payment / Cash', (invData.netPayable || 0).toFixed(2)],
+            ['Due', (invData.currentDue || 0).toFixed(2)]
+          ],
+          theme: 'grid',
+          styles: { fontSize: 9, fontStyle: 'bold', halign: 'right' }
+        });
+      }
 
       const footerY = finalY + 45;
       doc.line(14, footerY, 65, footerY);
@@ -710,7 +722,16 @@
       doc.setFontSize(10);
       doc.text("Thank for staying with us !!", 105, footerY + 15, null, null, "center");
 
-      doc.save(`${invData.invNo}_${invData.customer}.pdf`);
+      try {
+        const pdfBlob = doc.output('blob');
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const win = window.open(blobUrl, '_blank');
+        if (!win) {
+          doc.save(`${invData.invNo}_${invData.customer}.pdf`);
+        }
+      } catch(e) {
+        doc.save(`${invData.invNo}_${invData.customer}.pdf`);
+      }
     }
 
     function processSale(actionType) {
@@ -775,6 +796,8 @@
       const inv = invoices.find(i => i.invNo === invNo);
       if (inv) {
         generatePDF(inv);
+      } else {
+        alert("Invoice data paowa jayni!");
       }
     }
 
@@ -941,8 +964,8 @@
           <td class="p-2 font-bold">${i.totalBill} TK</td>
           <td class="p-2 text-rose-600 font-bold">${i.currentDue} TK</td>
           <td class="p-2 text-center flex items-center justify-center gap-1">
-            <button onclick="downloadInvoicePDF('${i.invNo}')" class="bg-indigo-100 text-indigo-800 text-[10px] px-2 py-1 rounded font-bold">📄 PDF</button>
-            <button onclick="resendInvoice('${i.invNo}')" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold">📲 WhatsApp</button>
+            <button onclick="downloadInvoicePDF('${i.invNo}')" class="bg-indigo-100 text-indigo-800 text-[10px] px-2 py-1 rounded font-bold hover:bg-indigo-200">📄 PDF</button>
+            <button onclick="resendInvoice('${i.invNo}')" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-1 rounded font-bold hover:bg-emerald-200">📲 WhatsApp</button>
           </td>
         </tr>
       `).join('');
@@ -978,7 +1001,6 @@
         </tr>
       `).join('');
 
-      // SUPER ADMIN USER MANAGEMENT TABLE WITH EDIT & RESET PASS BUTTONS
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
       document.getElementById('admin-user-count').innerText = users.length;
       document.getElementById('admin-users-tbody').innerHTML = users.map(u => `
@@ -1014,7 +1036,6 @@
       document.getElementById('summary-total-due').innerText = '৳ ' + totalDue;
     }
 
-    // ADMIN USER EDIT FUNCTIONS
     function openAdminEditModal(tenantId) {
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
       const user = users.find(u => u.tenantId === tenantId);
@@ -1049,7 +1070,23 @@
       }
     }
 
-    // ADMIN RESET USER PASSWORD
+    function changeAdminPassword() {
+      const currentPass = localStorage.getItem('pos_admin_pass') || 'admin123';
+      const inputOld = prompt("Purono Admin Password din:");
+
+      if (inputOld === currentPass) {
+        const newPass = prompt("Notun Admin Password din:");
+        if (newPass && newPass.trim().length >= 4) {
+          localStorage.setItem('pos_admin_pass', newPass.trim());
+          alert("Super Admin Password safalvabe change hoyechhe!");
+        } else {
+          alert("Notun password at least 4 digit-er hote hobe.");
+        }
+      } else if (inputOld !== null) {
+        alert("Purono password bhul hoyechhe!");
+      }
+    }
+
     function adminResetUserPass(tenantId) {
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
       const user = users.find(u => u.tenantId === tenantId);
@@ -1062,7 +1099,6 @@
       }
     }
 
-    // CUSTOMER FORGOT PASSWORD RESET LOGIC
     function handleCustomerResetPass(e) {
       e.preventDefault();
       const email = document.getElementById('forgot-email').value.trim().toLowerCase();
@@ -1176,14 +1212,20 @@
       e.preventDefault();
       const rawEmail = (document.getElementById('login-email').value || '').trim().toLowerCase();
       const rawPass = (document.getElementById('login-pass').value || '').trim();
+      const currentAdminPass = localStorage.getItem('pos_admin_pass') || 'admin123';
 
       if (rawEmail === 'admin@easypos.com' || rawEmail.includes('admin@easypos.com')) {
-        localStorage.setItem('pos_tenant_id', 'super_admin_001');
-        localStorage.setItem('pos_shop_name', 'Super Admin');
-        closeAuthModal();
-        checkSession();
-        switchTab('admin');
-        return;
+        if (rawPass === currentAdminPass) {
+          localStorage.setItem('pos_tenant_id', 'super_admin_001');
+          localStorage.setItem('pos_shop_name', 'Super Admin');
+          closeAuthModal();
+          checkSession();
+          switchTab('admin');
+          return;
+        } else {
+          alert("Admin password bhul hoyechhe!");
+          return;
+        }
       }
 
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
