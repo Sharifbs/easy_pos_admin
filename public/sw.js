@@ -1,14 +1,23 @@
-const CACHE_NAME = 'easy-pos-v1';
-const urlsToCache = ['/', '/index.html', '/manifest.json'];
+// Clear older cache and network-first strategy
+const CACHE_NAME = 'easy-pos-v2';
 
 self.addEventListener('install', event => {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => caches.delete(cache))
+      );
+    }).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', event => {
+  // Always fetch fresh code from Vercel network first
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
