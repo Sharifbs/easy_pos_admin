@@ -7,6 +7,8 @@
   <link rel="manifest" href="/manifest.json">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Hind Siliguri', sans-serif; }
@@ -56,7 +58,7 @@
     <section id="home" class="py-16 bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white text-center px-4">
       <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">🚀 Premium POS Software</span>
       <h1 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight">সহজ ও আধুনিক পস সিস্টেম দিয়ে <br><span class="text-indigo-400">আপনার ব্যবসা পরিচালনা করুন</span></h1>
-      <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">ইনভয়েস লিস্ট, স্টক ট্র্যাকিং, পারচেজ রিকনসিলিয়েশন এবং অটোমেটেড ইনকাম-এক্সপেনডিচার অ্যাকাউন্টস।</p>
+      <p class="text-slate-300 max-w-2xl mx-auto mt-4 text-sm md:text-base">স্ট্যান্ডার্ড প্রফেশনাল ইনভয়েস, কাস্টম লোগো, কোম্পানি হেডার, স্টক ট্র্যাকিং এবং অ্যাকাউন্টস সিস্টেম।</p>
 
       <div class="mt-8 flex flex-wrap justify-center gap-4">
         <button onclick="openAuthModal('signup')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-sm">ফ্রি একাউন্ট খুলুন</button>
@@ -185,13 +187,13 @@
           </div>
 
           <div class="grid grid-cols-2 gap-2 mt-3">
-            <button onclick="processSale('pdf')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow text-xs">📄 DOWNLOAD PDF</button>
+            <button onclick="processSale('pdf')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow text-xs">📄 DOWNLOAD STANDARD PDF</button>
             <button onclick="processSale('wa')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow text-xs">💬 SEND WHATSAPP</button>
           </div>
         </div>
       </div>
 
-      <!-- INVOICE LIST & SUMMARY -->
+      <!-- INVOICE LIST -->
       <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
         <h3 class="font-bold text-slate-800 text-sm mb-3">Invoice Summary & History</h3>
         <div class="overflow-x-auto">
@@ -242,7 +244,6 @@
         </div>
       </div>
 
-      <!-- PURCHASE LIST -->
       <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
         <h3 class="font-bold text-slate-800 text-sm mb-3">Purchase Records & History</h3>
         <div class="overflow-x-auto">
@@ -306,7 +307,6 @@
         </div>
       </div>
 
-      <!-- ACCOUNTS & EXPENSE LOG LIST -->
       <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
         <h3 class="font-bold text-slate-800 text-sm mb-3">Expense & Receipt History Summary</h3>
         <div class="overflow-x-auto">
@@ -325,6 +325,33 @@
       </div>
     </section>
 
+    <!-- 6. SETTINGS TAB (COMPANY / STORE INFO & LOGO) -->
+    <section id="tab-settings" class="tab-content hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 max-w-xl mx-auto">
+        <h2 class="text-xl font-bold text-slate-800 mb-4">Store & Invoice Settings</h2>
+        <form onsubmit="saveCompanySettings(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Company / Store Name</label>
+            <input type="text" id="set-company-name" required placeholder="e.g. Babri Mart" class="w-full p-2.5 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Company Address</label>
+            <input type="text" id="set-company-address" required placeholder="e.g. 220/1/2, Amtola, 60 Feet, Mirpur-02, Dhaka-1207" class="w-full p-2.5 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Cell / Phone Number</label>
+            <input type="text" id="set-company-cell" required placeholder="e.g. 09617500450" class="w-full p-2.5 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-slate-600 font-semibold mb-1">Upload Logo Image</label>
+            <input type="file" id="set-company-logo" accept="image/*" class="w-full p-2 border rounded-lg bg-slate-50">
+            <p class="text-[10px] text-slate-400 mt-1">PNG or JPG format logo for standard pdf invoices.</p>
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow">Save Store Settings</button>
+        </form>
+      </div>
+    </section>
+
   </main>
 
   <!-- AUTH MODAL -->
@@ -335,11 +362,13 @@
       <div id="signup-box">
         <h2 class="text-2xl font-bold text-slate-800 mb-1">Create POS Account</h2>
         <form onsubmit="handleSignup(event)" class="space-y-3 mt-4 text-xs">
-          <input type="text" id="signup-shop" required placeholder="Business / Shop Name" class="w-full p-2.5 border rounded-lg">
+          <input type="text" id="signup-shop" required placeholder="Company / Store Name" class="w-full p-2.5 border rounded-lg">
+          <input type="text" id="signup-address" required placeholder="Store Address" class="w-full p-2.5 border rounded-lg">
+          <input type="text" id="signup-cell" required placeholder="Cell / Hotline Number" class="w-full p-2.5 border rounded-lg">
           <input type="text" id="signup-name" required placeholder="Owner Name" class="w-full p-2.5 border rounded-lg">
           <input type="email" id="signup-email" required placeholder="Email Address" class="w-full p-2.5 border rounded-lg">
           <input type="password" id="signup-pass" required placeholder="Password" class="w-full p-2.5 border rounded-lg">
-          <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-lg">Sign Up</button>
+          <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-lg">Sign Up & Create Account</button>
         </form>
         <p class="text-xs text-center text-slate-600 mt-4">আগে থেকেই অ্যাকাউন্ট আছে? <button onclick="toggleAuth('login')" class="text-indigo-600 font-bold">Log In</button></p>
       </div>
@@ -363,6 +392,7 @@
     <button onclick="switchTab('purchase')" id="nav-purchase" class="flex flex-col items-center"><span>🛒</span><span>Purchase</span></button>
     <button onclick="switchTab('stock')" id="nav-stock" class="flex flex-col items-center"><span>📦</span><span>Stock</span></button>
     <button onclick="switchTab('accounts')" id="nav-accounts" class="flex flex-col items-center"><span>💰</span><span>Accounts</span></button>
+    <button onclick="switchTab('settings')" id="nav-settings" class="flex flex-col items-center"><span>⚙️</span><span>Settings</span></button>
   </nav>
 
   <!-- FOOTER -->
@@ -374,7 +404,7 @@
   </footer>
 
   <script>
-    // INITIAL SETUP & INVOICE NUMBER GENERATOR
+    // FORM SETUP & INVOICE NUMBER GENERATOR
     function initFormDates() {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('sale-date').value = today;
@@ -384,9 +414,14 @@
       const invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       const nextInvNum = 'INV-' + (1001 + invoices.length);
       document.getElementById('sale-inv-no').value = nextInvNum;
+
+      // Populate Settings Form
+      document.getElementById('set-company-name').value = localStorage.getItem('pos_company_name') || localStorage.getItem('pos_shop_name') || '';
+      document.getElementById('set-company-address').value = localStorage.getItem('pos_company_address') || '';
+      document.getElementById('set-company-cell').value = localStorage.getItem('pos_company_cell') || '';
     }
 
-    // 1. SALES CALCULATION
+    // CALCULATION
     function calcSaleTotal() {
       const qty = parseFloat(document.getElementById('sale-qty').value) || 0;
       const price = parseFloat(document.getElementById('sale-price').value) || 0;
@@ -405,7 +440,27 @@
       document.getElementById('cod-status-badge').innerText = isCod ? 'YES (COD)' : 'NO';
     }
 
-    // 2. PROCESS SALE (PDF DOWNLOAD & WHATSAPP)
+    // NUMBER TO WORDS CONVERTER
+    function numberToWords(num) {
+      if (!num || num === 0) return 'Zero Taka Only';
+      const a = ['','One ','Two ','Three ','Four ','Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
+      const b = ['', '', 'Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+
+      function inWords(n) {
+        if ((n = n.toString()).length > 9) return 'overflow';
+        let n_array = ('000000000' + n).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n_array) return '';
+        let str = '';
+        str += (n_array[1] != 0) ? (a[Number(n_array[1])] || b[n_array[1][0]] + ' ' + a[n_array[1][1]]) + 'Lakh ' : '';
+        str += (n_array[2] != 0) ? (a[Number(n_array[2])] || b[n_array[2][0]] + ' ' + a[n_array[2][1]]) + 'Thousand ' : '';
+        str += (n_array[3] != 0) ? (a[Number(n_array[3])] || b[n_array[3][0]] + ' ' + a[n_array[3][1]]) + 'Hundred ' : '';
+        str += (n_array[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n_array[5])] || b[n_array[5][0]] + ' ' + a[n_array[5][1]]) : '';
+        return str;
+      }
+      return inWords(num).trim() + ' Taka Only';
+    }
+
+    // PROCESS SALE & GENERATE STANDARD PDF
     function processSale(actionType) {
       const invNo = document.getElementById('sale-inv-no').value;
       const date = document.getElementById('sale-date').value;
@@ -428,7 +483,7 @@
         return;
       }
 
-      // Stock Reduction
+      // Deduct Stock
       let stock = JSON.parse(localStorage.getItem('pos_stock') || '[]');
       const stockItem = stock.find(s => s.name.toLowerCase() === item.toLowerCase());
       if (stockItem) {
@@ -436,37 +491,103 @@
         localStorage.setItem('pos_stock', JSON.stringify(stock));
       }
 
-      // Save Invoice to List
+      // Save Invoice
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       const invData = { invNo, date, customer, phone, address, item, qty, price, totalBill, netPayable, currentDue, isCod };
       invoices.push(invData);
       localStorage.setItem('pos_invoices', JSON.stringify(invoices));
 
-      // PDF Generation
+      // PDF STANDARD FORMAT GENERATION
       if (actionType === 'pdf') {
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.setFontSize(16);
-        doc.text("INVOICE RECEIPT", 105, 15, null, null, "center");
+        const doc = new jsPDF('p', 'mm', 'a4');
+
+        const companyName = localStorage.getItem('pos_company_name') || localStorage.getItem('pos_shop_name') || 'Easy POS Store';
+        const companyAddress = localStorage.getItem('pos_company_address') || 'Dhaka, Bangladesh';
+        const companyCell = localStorage.getItem('pos_company_cell') || '01716247713';
+        const logoData = localStorage.getItem('pos_company_logo');
+
+        // Invoice Header
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("Invoice", 14, 20);
+
+        doc.setFontSize(11);
+        doc.text(companyName, 14, 28);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.text(companyAddress, 14, 34);
+        doc.text(`Call : ${companyCell}`, 14, 39);
+
+        // Render Store Logo if Uploaded
+        if (logoData) {
+          try {
+            doc.addImage(logoData, 'JPEG', 150, 12, 45, 25);
+          } catch(e) {}
+        }
+
+        doc.setLineWidth(0.5);
+        doc.line(14, 44, 196, 44);
+
+        // Customer & Invoice Details
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "bold");
+        doc.text(`Date        : ${date}`, 14, 52);
+        doc.text(`Name      : ${customer}`, 14, 58);
+        doc.text(`Address : ${address}`, 14, 64);
+
+        doc.text(`Mobile : ${phone}`, 85, 52);
+
+        doc.text(`Invoice No : ${invNo}`, 145, 52);
+
+        // Item Table
+        doc.autoTable({
+          startY: 70,
+          head: [['SL', 'Product', 'Quantity', 'Price', 'Total Price']],
+          body: [
+            ['1', item, qty.toFixed(2), price.toFixed(2), totalBill.toFixed(2)]
+          ],
+          theme: 'grid',
+          headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold' },
+          styles: { fontSize: 9, cellPadding: 2.5 }
+        });
+
+        const finalY = doc.lastAutoTable.finalY || 90;
+
+        // In Words
+        doc.setFont("helvetica", "bold");
+        doc.text(`In words :   ${numberToWords(totalBill)}`, 14, finalY + 12);
+
+        // Grand Total Box Right Side
+        doc.autoTable({
+          startY: finalY + 5,
+          margin: { left: 135 },
+          body: [
+            ['Grand Total', totalBill.toFixed(2)],
+            ['Discount / Advance', advance.toFixed(2)],
+            ['Payment', received.toFixed(2)],
+            ['Due', currentDue.toFixed(2)]
+          ],
+          theme: 'grid',
+          styles: { fontSize: 9, fontStyle: 'bold', halign: 'right' }
+        });
+
+        // Signature and Footer
+        const footerY = finalY + 45;
+        doc.line(14, footerY, 65, footerY);
+        doc.text("Signature", 30, footerY + 5);
+        doc.setFontSize(8);
+        doc.text(date, 32, footerY + 9);
+
         doc.setFontSize(10);
-        doc.text(`Invoice No: ${invNo}`, 14, 25);
-        doc.text(`Date: ${date}`, 14, 30);
-        doc.text(`Customer Name: ${customer}`, 14, 38);
-        doc.text(`Phone: ${phone}`, 14, 43);
-        doc.text(`Address: ${address}`, 14, 48);
-        doc.text(`Item Name: ${item} (Qty: ${qty} x ${price} TK)`, 14, 56);
-        doc.text(`Total Bill: ${totalBill} TK`, 14, 64);
-        doc.text(`Net Payable: ${netPayable} TK`, 14, 69);
-        doc.text(`Current Due: ${currentDue} TK`, 14, 74);
-        doc.text(`Payment Status: ${isCod ? 'Cash on Delivery (COD)' : 'Direct Paid'}`, 14, 82);
+        doc.text("Thank for staying with us !!", 105, footerY + 15, null, null, "center");
+
         doc.save(`${invNo}_${customer}.pdf`);
       }
 
-      // WhatsApp Action
       if (actionType === 'wa') {
-        const shopName = localStorage.getItem('pos_shop_name') || 'Easy POS';
         const msg = encodeURIComponent(
-          `*INVOICE: ${invNo}*\nDate: ${date}\nStore: ${shopName}\nCustomer: ${customer}\nPhone: ${phone}\nAddress: ${address}\nItem: ${item}\nQty: ${qty}\nTotal Bill: ${totalBill} TK\nNet Payable: ${netPayable} TK\nCurrent Due: ${currentDue} TK\nPayment Method: ${isCod ? 'Cash on Delivery (COD)' : 'Paid'}`
+          `*INVOICE: ${invNo}*\nDate: ${date}\nCustomer: ${customer}\nPhone: ${phone}\nAddress: ${address}\nItem: ${item}\nQty: ${qty}\nTotal Bill: ${totalBill} TK\nNet Payable: ${netPayable} TK\nCurrent Due: ${currentDue} TK`
         );
         window.open(`https://wa.me/${phone ? '88' + phone : ''}?text=${msg}`, '_blank');
       }
@@ -475,19 +596,41 @@
       renderAllTables();
     }
 
+    // SAVE STORE SETTINGS
+    function saveCompanySettings(e) {
+      e.preventDefault();
+      const name = document.getElementById('set-company-name').value;
+      const addr = document.getElementById('set-company-address').value;
+      const cell = document.getElementById('set-company-cell').value;
+      const logoFile = document.getElementById('set-company-logo').files[0];
+
+      localStorage.setItem('pos_company_name', name);
+      localStorage.setItem('pos_company_address', addr);
+      localStorage.setItem('pos_company_cell', cell);
+
+      if (logoFile) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          localStorage.setItem('pos_company_logo', evt.target.result);
+          alert("Settings & Logo saved successfully!");
+        };
+        reader.readAsDataURL(logoFile);
+      } else {
+        alert("Settings saved successfully!");
+      }
+    }
+
     // RE-SEND WHATSAPP
     function resendInvoice(invNo) {
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       const inv = invoices.find(i => i.invNo === invNo);
       if (inv) {
-        const msg = encodeURIComponent(
-          `*RE-SENT INVOICE: ${inv.invNo}*\nDate: ${inv.date}\nCustomer: ${inv.customer}\nItem: ${inv.item}\nTotal: ${inv.totalBill} TK\nDue: ${inv.currentDue} TK`
-        );
+        const msg = encodeURIComponent(`*RE-SENT INVOICE: ${inv.invNo}*\nDate: ${inv.date}\nCustomer: ${inv.customer}\nItem: ${inv.item}\nTotal: ${inv.totalBill} TK\nDue: ${inv.currentDue} TK`);
         window.open(`https://wa.me/${inv.phone ? '88' + inv.phone : ''}?text=${msg}`, '_blank');
       }
     }
 
-    // 3. PURCHASE & AUTO STOCK
+    // PURCHASE & ACCOUNTS
     function calcPurTotal() {
       const qty = parseFloat(document.getElementById('pur-qty').value) || 0;
       const cost = parseFloat(document.getElementById('pur-cost').value) || 0;
@@ -529,7 +672,6 @@
       renderAllTables();
     }
 
-    // 4. ACCOUNTS ENTRY
     function addAccountEntry() {
       const date = document.getElementById('acc-date').value;
       const type = document.getElementById('acc-type').value;
@@ -551,12 +693,10 @@
       renderAllTables();
     }
 
-    // 5. RENDER ALL TABLES & FINANCIAL STATEMENTS
+    // RENDER TABLES & STATS
     function renderAllTables() {
-      // Invoices
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
-      const invBody = document.getElementById('invoice-list-tbody');
-      invBody.innerHTML = invoices.map(i => `
+      document.getElementById('invoice-list-tbody').innerHTML = invoices.map(i => `
         <tr class="border-b">
           <td class="p-2 font-mono font-bold">${i.invNo}</td>
           <td class="p-2">${i.date}</td>
@@ -569,10 +709,8 @@
         </tr>
       `).join('');
 
-      // Purchase
       let purchases = JSON.parse(localStorage.getItem('pos_purchases') || '[]');
-      const purBody = document.getElementById('purchase-list-tbody');
-      purBody.innerHTML = purchases.map(p => `
+      document.getElementById('purchase-list-tbody').innerHTML = purchases.map(p => `
         <tr class="border-b">
           <td class="p-2">${p.date}</td>
           <td class="p-2 font-semibold">${p.supplier}</td>
@@ -582,10 +720,8 @@
         </tr>
       `).join('');
 
-      // Stock
       let stock = JSON.parse(localStorage.getItem('pos_stock') || '[]');
-      const stockBody = document.getElementById('stock-table-body');
-      stockBody.innerHTML = stock.map(s => `
+      document.getElementById('stock-table-body').innerHTML = stock.map(s => `
         <tr class="border-b">
           <td class="p-3 font-semibold">${s.name}</td>
           <td class="p-3 font-bold ${s.qty <= 5 ? 'text-red-500' : 'text-emerald-600'}">${s.qty}</td>
@@ -594,10 +730,8 @@
         </tr>
       `).join('');
 
-      // Accounts Log
       let ledger = JSON.parse(localStorage.getItem('pos_ledger') || '[]');
-      const accBody = document.getElementById('accounts-list-tbody');
-      accBody.innerHTML = ledger.map(l => `
+      document.getElementById('accounts-list-tbody').innerHTML = ledger.map(l => `
         <tr class="border-b">
           <td class="p-2">${l.date}</td>
           <td class="p-2"><span class="text-[10px] px-2 py-0.5 rounded ${l.type === 'Receipt' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${l.type}</span></td>
@@ -606,7 +740,6 @@
         </tr>
       `).join('');
 
-      // Calculations for Overview Dashboard
       const totalSales = invoices.reduce((sum, i) => sum + i.totalBill, 0);
       const totalPurchases = purchases.reduce((sum, p) => sum + p.totalCost, 0);
       const totalExpenses = ledger.filter(l => l.type === 'Expense').reduce((sum, l) => sum + l.amount, 0);
@@ -625,7 +758,7 @@
       document.getElementById('summary-total-due').innerText = '৳ ' + totalDue;
     }
 
-    // AUTH & NAVIGATION
+    // SESSION & VIEW NAVIGATION
     function checkSession() {
       const activeTenant = localStorage.getItem('pos_tenant_id');
       if (activeTenant) {
@@ -676,20 +809,26 @@
     function handleSignup(e) {
       e.preventDefault();
       const shop = document.getElementById('signup-shop').value.trim();
+      const address = document.getElementById('signup-address').value.trim();
+      const cell = document.getElementById('signup-cell').value.trim();
       const name = document.getElementById('signup-name').value.trim();
       const email = document.getElementById('signup-email').value.trim().toLowerCase();
       const pass = document.getElementById('signup-pass').value;
 
       const tenantId = 'shop_' + Math.random().toString(36).substring(2, 7);
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
-      users.push({ tenantId, shop, name, email, pass });
+      users.push({ tenantId, shop, address, cell, name, email, pass });
       localStorage.setItem('pos_users', JSON.stringify(users));
 
       localStorage.setItem('pos_tenant_id', tenantId);
       localStorage.setItem('pos_shop_name', shop);
+      localStorage.setItem('pos_company_name', shop);
+      localStorage.setItem('pos_company_address', address);
+      localStorage.setItem('pos_company_cell', cell);
 
       closeAuthModal();
       checkSession();
+      initFormDates();
     }
 
     function handleLogin(e) {
@@ -703,8 +842,12 @@
       if (user) {
         localStorage.setItem('pos_tenant_id', user.tenantId);
         localStorage.setItem('pos_shop_name', user.shop);
+        localStorage.setItem('pos_company_name', user.shop || '');
+        localStorage.setItem('pos_company_address', user.address || '');
+        localStorage.setItem('pos_company_cell', user.cell || '');
         closeAuthModal();
         checkSession();
+        initFormDates();
       } else {
         alert("ইমেইল বা পাসওয়ার্ড ভুল হয়েছে!");
       }
@@ -725,8 +868,10 @@
         btn.classList.add('text-slate-600');
       });
       const activeNav = document.getElementById('nav-' + tabName);
-      activeNav.classList.remove('text-slate-600');
-      activeNav.classList.add('text-indigo-600', 'font-bold');
+      if(activeNav) {
+        activeNav.classList.remove('text-slate-600');
+        activeNav.classList.add('text-indigo-600', 'font-bold');
+      }
     }
 
     window.onload = function() {
