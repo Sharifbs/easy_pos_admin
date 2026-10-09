@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/invoice.py", "use": "@vercel/python" },
+    { "src": "public/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/invoice", "dest": "api/invoice.py" },
+    { "src": "/(.*)", "dest": "public/$1" }
+  ]
+}

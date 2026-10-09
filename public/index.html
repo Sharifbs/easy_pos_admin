@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easy POS - Invoice Generator</title>
+  <link rel="manifest" href="/manifest.json">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; background: #eef2f5; }
+    .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); max-width: 480px; margin: 0 auto; }
+    h2 { color: #1e293b; margin-top: 0; font-size: 20px; text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    label { font-size: 13px; color: #64748b; font-weight: 600; display: block; margin-top: 12px; }
+    input, select { width: 100%; padding: 10px 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px; }
+    .row { display: flex; gap: 10px; }
+    .row div { flex: 1; }
+    .summary-box { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px; margin-top: 15px; }
+    .summary-item { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; color: #334155; }
+    .summary-item.due { color: #dc2626; font-weight: bold; font-size: 16px; border-top: 1px solid #e2e8f0; padding-top: 5px; }
+    button { width: 100%; background: #25D366; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 15px; margin-top: 18px; cursor: pointer; transition: 0.2s; }
+    button:hover { background: #1eb956; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>EASY POS - SALES & INVOICE</h2>
+
+  <label for="clientSelect">Select Client / Store</label>
+  <select id="clientSelect">
+    <option value="CUST-001">Rahim Store (CUST-001)</option>
+  </select>
+
+  <label for="custName">Customer Name</label>
+  <input type="text" id="custName" placeholder="Enter Customer Name">
+
+  <label for="phone">Phone Number</label>
+  <input type="text" id="phone" placeholder="Enter Phone Number">
+
+  <label for="item">Product / Item Name</label>
+  <input type="text" id="item" placeholder="Item Name">
+
+  <div class="row">
+    <div>
+      <label for="qty">Quantity</label>
+      <input type="number" id="qty" value="1" min="1" oninput="calculateSummary()">
+    </div>
+    <div>
+      <label for="price">Unit Price (TK)</label>
+      <input type="number" id="price" value="0" min="0" oninput="calculateSummary()">
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label for="advance">Advance (TK)</label>
+      <input type="number" id="advance" value="0" min="0" oninput="calculateSummary()">
+    </div>
+    <div>
+      <label for="received">Received (TK)</label>
+      <input type="number" id="received" value="0" min="0" oninput="calculateSummary()">
+    </div>
+  </div>
+
+  <div class="summary-box">
+    <div class="summary-item"><span>Total Bill:</span><span id="txtTotal">0 TK</span></div>
+    <div class="summary-item"><span>Net Payable:</span><span id="txtNet">0 TK</span></div>
+    <div class="summary-item due"><span>Current Due:</span><span id="txtDue">0 TK</span></div>
+  </div>
+
+  <button onclick="sendInvoice()">SHARE INVOICE VIA WHATSAPP</button>
+</div>
+
+<script>
+  function calculateSummary() {
+    const qty = parseFloat(document.getElementById('qty').value) || 0;
+    const price = parseFloat(document.getElementById('price').value) || 0;
+    const advance = parseFloat(document.getElementById('advance').value) || 0;
+    const received = parseFloat(document.getElementById('received').value) || 0;
+
+    const total = qty * price;
+    const net = total - advance;
+    const due = net - received;
+
+    document.getElementById('txtTotal').innerText = total + " TK";
+    document.getElementById('txtNet').innerText = net + " TK";
+    document.getElementById('txtDue').innerText = due + " TK";
+  }
+
+  async function sendInvoice() {
+    const data = {
+      clientId: document.getElementById('clientSelect').value,
+      custName: document.getElementById('custName').value || "Valued Customer",
+      phone: document.getElementById('phone').value || "N/A",
+      item: document.getElementById('item').value || "General Item",
+      qty: document.getElementById('qty').value,
+      price: document.getElementById('price').value,
+      advance: document.getElementById('advance').value,
+      received: document.getElementById('received').value
+    };
+
+    try {
+      const response = await fetch('/api/invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) throw new Error("PDF generation failed");
+
+      const blob = await response.blob();
+      const file = new File([blob], `Invoice_${data.custName}.pdf`, { type: 'application/pdf' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Invoice PDF',
+          text: `*INVOICE FROM POS*\nCustomer: ${data.custName}\nItem: ${data.item}\nTotal: ${data.qty * data.price} TK`
+        });
+      } else {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Invoice_${data.custName}.pdf`;
+        link.click();
+      }
+    } catch (err) {
+      alert("Error: " + err.message);
+    }
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+</script>
+
+</body>
+</html>
