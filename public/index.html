@@ -735,7 +735,6 @@
       }
     }
 
-    // CASH COLLECTION MODAL & LOGIC
     function openCashCollectModal() {
       let invoices = JSON.parse(localStorage.getItem('pos_invoices') || '[]');
       const pendingInvoices = invoices.filter(i => i.currentDue > 0);
@@ -936,7 +935,6 @@
         </tr>
       `).join('');
 
-      // Super Admin User List Render
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
       document.getElementById('admin-user-count').innerText = users.length;
       document.getElementById('admin-users-tbody').innerHTML = users.map(u => `
@@ -1059,11 +1057,14 @@
       initFormDates();
     }
 
+    // UPDATED SUPER ADMIN LOGIN LOGIC
     function handleLogin(e) {
       e.preventDefault();
-      const email = document.getElementById('login-email').value.trim().toLowerCase();
-      const pass = document.getElementById('login-pass').value;
+      const rawEmail = document.getElementById('login-email').value || '';
+      const email = rawEmail.trim().toLowerCase();
+      const pass = (document.getElementById('login-pass').value || '').trim();
 
+      // Flexible Super Admin Match
       if (email === 'admin@easypos.com' && pass === 'admin123') {
         localStorage.setItem('pos_tenant_id', 'super_admin_001');
         localStorage.setItem('pos_shop_name', 'Super Admin');
@@ -1074,7 +1075,7 @@
       }
 
       let users = JSON.parse(localStorage.getItem('pos_users') || '[]');
-      const user = users.find(u => u.email === email && u.pass === pass);
+      const user = users.find(u => u.email.toLowerCase() === email && u.pass === pass);
 
       if (user) {
         localStorage.setItem('pos_tenant_id', user.tenantId);
@@ -1086,7 +1087,7 @@
         checkSession();
         initFormDates();
       } else {
-        alert("ইমেইল বা পাসওয়ার্ড ভুল হয়েছে!");
+        alert("ইমেইল বা পাসওয়ার্ড ভুল হয়েছে! সঠিক তথ্য দিন।");
       }
     }
 
